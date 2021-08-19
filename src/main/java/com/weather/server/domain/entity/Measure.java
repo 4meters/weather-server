@@ -10,6 +10,7 @@ public class Measure {
 
     public String timestamp;
     public String temp;
+    public String humidity;
     public String pressure;
     public String pm25;
     public String pm10;
@@ -18,12 +19,46 @@ public class Measure {
     public Measure() {
     }
 
-    public Measure(String timestamp, String temp, String pressure, String pm25, String pm10, String pm25Corr) {
+    public Measure(String timestamp, String temp, String humidity, String pressure, String pm25, String pm10, String pm25Corr) {
         this.timestamp = timestamp;
         this.temp = temp;
+        this.humidity = humidity;
         this.pressure = pressure;
         this.pm25 = pm25;
         this.pm10 = pm10;
+        this.pm25Corr = pm25Corr;
+    }
+
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setTemp(String temp) {
+        this.temp = temp;
+    }
+
+    public void setHumidity(String humidity) {
+        this.humidity = humidity;
+    }
+
+    public void setPressure(String pressure) {
+        this.pressure = pressure;
+    }
+
+    public void setPm25(String pm25) {
+        this.pm25 = pm25;
+    }
+
+    public void setPm10(String pm10) {
+        this.pm10 = pm10;
+    }
+
+    public void setPm25Corr(String pm25Corr) {
         this.pm25Corr = pm25Corr;
     }
 

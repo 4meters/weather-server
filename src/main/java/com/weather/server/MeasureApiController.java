@@ -1,7 +1,8 @@
 package com.weather.server;
 
 import com.weather.server.domain.dto.MeasureDto;
-import com.weather.server.service.impl.MeasureServiceImpl;
+import com.weather.server.service.MeasureService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,22 +12,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value="/api")
 public class MeasureApiController {
 
-    private MeasureServiceImpl measureServiceImpl;
+    private MeasureService measureService;
 
-    /*public MeasureApiController(MeasureService measureService) {
+    @Autowired
+    public MeasureApiController(MeasureService measureService) {
         this.measureService = measureService;
-    }*/
-
-    public MeasureApiController(MeasureServiceImpl measureServiceImpl) {
-        this.measureServiceImpl = measureServiceImpl;
     }
 
     @PostMapping(value="/new-measure")
-    public ResponseEntity<Void> orderCheckout(@RequestBody MeasureDto measureDto){
+    public ResponseEntity<Void> newMeasure(@RequestBody MeasureDto measureDto){
         //if api key is valid
+        return measureService.saveMeasure(measureDto) ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        measureServiceImpl.test2();
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
