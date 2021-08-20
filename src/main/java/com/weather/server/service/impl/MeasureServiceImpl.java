@@ -25,9 +25,6 @@ public class MeasureServiceImpl implements MeasureService {
         MongoClient mongoClient = MongoClients.create(settings);
         MongoDatabase database = mongoClient.getDatabase("Cluster0");
     }*/
-    public void test2(){
-        measureRepository.save(new Measure("2012-02-05","20","60.8","999.9","4.0","4.0","2.8"));
-    }
 
     @Override
     public boolean saveMeasure(MeasureDto measureDto) {

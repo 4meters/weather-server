@@ -1,4 +1,4 @@
-package com.weather.server;
+package com.weather.server.controller;
 
 import com.weather.server.domain.dto.MeasureDto;
 import com.weather.server.service.MeasureService;
