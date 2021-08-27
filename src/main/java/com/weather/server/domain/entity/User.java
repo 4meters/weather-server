@@ -15,6 +15,22 @@ public class User {
         this.id = id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }

@@ -5,9 +5,11 @@ import com.weather.server.domain.dto.UserLoginDto;
 import com.weather.server.domain.dto.UserLoginTokenDto;
 
 public interface UserService {
-    void createUser(UserLoginDto userLoginDto);
-    UserLoginTokenDto loginUser();
-    boolean generateApiKey();
+    boolean createUser(UserLoginDto userLoginDto);
+    UserLoginTokenDto loginUser(UserLoginDto userLoginDto);
+    boolean generateApiKey(UserLoginTokenDto userLoginTokenDto);
     UserApiKeyDto readApiKey(String token);
-    boolean checkToken();
+    boolean checkToken(String token);
+
+    boolean verifyEmail();
 }
