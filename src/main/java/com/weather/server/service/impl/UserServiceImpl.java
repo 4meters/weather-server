@@ -6,6 +6,7 @@ import com.weather.server.domain.dto.UserLoginTokenDto;
 import com.weather.server.domain.entity.User;
 import com.weather.server.domain.mapper.UserMapper;
 import com.weather.server.domain.model.TokenGenerator;
+import com.weather.server.domain.model.UserIdGenerator;
 import com.weather.server.domain.repository.UserRepository;
 import com.weather.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,11 @@ public class UserServiceImpl implements UserService {
         //
         if(userRepository.findByEmail(userLoginDto.getEmail())==null){
             User user = new UserMapper().mapToEntity(userLoginDto);
+            user.setUserId(UserIdGenerator.generateNewUserId());
             userRepository.save(user);
             return true;
         }
-        else{
+        else{//return http code if exists or bad email
             return false;
         }
 
@@ -81,9 +83,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByToken(token);
         if(user != null){
             if(user.getToken().equals(token)){
-                if(user.getApiKey() != null){
-                    return user.getApiKey().isEmpty() ? null : new UserApiKeyDto(user.getApiKey());
+                if (user.getApiKey() == null) {
+                    generateApiKey(new UserLoginTokenDto(token));
+                    user = userRepository.findByToken(token);
                 }
+                return user.getApiKey().isEmpty() ? null : new UserApiKeyDto(user.getApiKey());
             }
         }
         //find user by token

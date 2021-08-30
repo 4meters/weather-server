@@ -4,8 +4,9 @@ import com.weather.server.domain.dto.MeasureDto;
 import com.weather.server.domain.entity.Measure;
 
 public class MeasureMapper {
-    public Measure mapToEntity(MeasureDto measureDto){
+    public Measure mapToEntity(MeasureDto measureDto, String userId){
         Measure measure = new Measure();
+        measure.setUserId(userId);
         measure.setTimestamp(measureDto.getTimestamp());
         measure.setTemp(measureDto.getTemp());
         measure.setPressure(measureDto.getPressure());
