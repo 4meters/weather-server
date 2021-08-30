@@ -6,6 +6,7 @@ public class User {
     @Id
     String id;
 
+    String userId;
     String email;
     String password;
     String token;
@@ -13,6 +14,10 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getEmail() {
@@ -29,6 +34,10 @@ public class User {
 
     public String getApiKey() {
         return apiKey;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setEmail(String email) {

@@ -8,6 +8,7 @@ public class Measure {
     @Id
     public String id;
 
+    public String userId;
     public String timestamp;
     public String temp;
     public String humidity;
@@ -19,7 +20,8 @@ public class Measure {
     public Measure() {
     }
 
-    public Measure(String timestamp, String temp, String humidity, String pressure, String pm25, String pm10, String pm25Corr) {
+    public Measure(String userId, String timestamp, String temp, String humidity, String pressure, String pm25, String pm10, String pm25Corr) {
+        this.userId = userId;
         this.timestamp = timestamp;
         this.temp = temp;
         this.humidity = humidity;
@@ -32,6 +34,10 @@ public class Measure {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setTimestamp(String timestamp) {
