@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
                 String token = TokenGenerator.generateNewToken();
                 user.setToken(token);
                 userRepository.save(user);
+                return new UserLoginTokenDto(token);
             }
         }
         //checkif email match
