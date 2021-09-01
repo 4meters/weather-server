@@ -32,7 +32,8 @@ public class MeasureServiceImpl implements MeasureService {
 
     @Override
     public boolean saveMeasure(MeasureDto measureDto) {
-        String userId=measureDto.getApiKey();
+        //sth wrong here
+        String userId=verifyApiKey(measureDto.getApiKey());
         if(userId!=null){
             Measure measure = new MeasureMapper().mapToEntity(measureDto, userId);
             measureRepository.save(measure);
@@ -45,14 +46,25 @@ public class MeasureServiceImpl implements MeasureService {
 
     @Override
     public String verifyApiKey(String apiKey) {
-        //TODO set api key for user (generate) and check in user database
         User user=userRepository.findByApiKey(apiKey);
-        if(user.getApiKey().equals(apiKey)) {
+        if(user == null){
+            return null;
+        }
+        else if(user.getApiKey().equals(apiKey)) {
             return user.getUserId();
         }
         else{
             return null;
         }
+    }
+
+    @Override
+    public MeasureDto getLastMeasure() {
+        Measure measure =measureRepository.findFirstByOrderByIdDesc();
+        //Measure measure=measureRepository.findByTemp("24.37");
+        System.out.println(measure);
+        MeasureDto measureDto = new MeasureDto("",measure.timestamp, measure.temp, measure.humidity, measure.pressure, measure.pm25, measure.pm10, measure.pm25Corr);
+        return measureDto;
     }
 
 

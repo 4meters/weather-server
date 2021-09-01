@@ -9,7 +9,7 @@ public class Measure {
     public String id;
 
     public String userId;
-    public String timestamp;
+    public String timestamp; //TODO change String to date format for sorting
     public String temp;
     public String humidity;
     public String pressure;
