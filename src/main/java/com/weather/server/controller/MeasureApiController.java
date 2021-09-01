@@ -27,4 +27,9 @@ public class MeasureApiController {
 
     }
 
+    @GetMapping(value="/last-measure")
+    public ResponseEntity<MeasureDto> getLast(){
+        return new ResponseEntity<>(measureService.getLastMeasure(), HttpStatus.OK);
+    }
+
 }
