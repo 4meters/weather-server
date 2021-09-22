@@ -7,4 +7,5 @@ public interface MeasureService {
     String verifyApiKey(String apiKey);
 
     MeasureDto getLastMeasure();
+    void getMeasureListByDate();
 }

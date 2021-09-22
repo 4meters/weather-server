@@ -32,4 +32,10 @@ public class MeasureApiController {
         return new ResponseEntity<>(measureService.getLastMeasure(), HttpStatus.OK);
     }
 
+    @GetMapping(value="/measure-by-date")
+    public ResponseEntity<?> getByDate(){
+        measureService.getMeasureListByDate();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
