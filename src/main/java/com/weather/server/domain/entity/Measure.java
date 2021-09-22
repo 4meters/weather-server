@@ -3,6 +3,8 @@ package com.weather.server.domain.entity;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.Date;
+
 public class Measure {
 
     @Id
@@ -16,11 +18,13 @@ public class Measure {
     public String pm25;
     public String pm10;
     public String pm25Corr;
+    public Date date;
 
     public Measure() {
     }
 
-    public Measure(String userId, String timestamp, String temp, String humidity, String pressure, String pm25, String pm10, String pm25Corr) {
+    public Measure(String userId, String timestamp, String temp, String humidity, String pressure, String pm25,
+                   String pm10, String pm25Corr, Date date) {
         this.userId = userId;
         this.timestamp = timestamp;
         this.temp = temp;
@@ -29,6 +33,7 @@ public class Measure {
         this.pm25 = pm25;
         this.pm10 = pm10;
         this.pm25Corr = pm25Corr;
+        this.date = date;
     }
 
 
@@ -66,6 +71,10 @@ public class Measure {
 
     public void setPm25Corr(String pm25Corr) {
         this.pm25Corr = pm25Corr;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override

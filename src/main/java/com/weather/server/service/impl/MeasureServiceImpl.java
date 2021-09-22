@@ -10,6 +10,10 @@ import com.weather.server.service.MeasureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class MeasureServiceImpl implements MeasureService {
 
@@ -65,6 +69,15 @@ public class MeasureServiceImpl implements MeasureService {
         System.out.println(measure);
         MeasureDto measureDto = new MeasureDto("",measure.timestamp, measure.temp, measure.humidity, measure.pressure, measure.pm25, measure.pm10, measure.pm25Corr);
         return measureDto;
+    }
+
+    @Override
+    public void getMeasureListByDate() {
+        Date dateFrom = Date.from( Instant.parse( "2012-07-06T10:39:40Z" ));
+        Date dateTo = Date.from( Instant.parse( "2014-07-08T10:39:40Z" ));
+        List <Measure> measureList = measureRepository.findByDateBetween(dateFrom,dateTo);
+        System.out.println(measureList);
+        //return measureList;
     }
 
 
