@@ -3,11 +3,14 @@ package com.weather.server.domain.mapper;
 import com.weather.server.domain.dto.MeasureDto;
 import com.weather.server.domain.entity.Measure;
 
+import java.time.Instant;
+import java.util.Date;
+
 public class MeasureMapper {
     public Measure mapToEntity(MeasureDto measureDto, String userId){
         Measure measure = new Measure();
         measure.setUserId(userId);
-        measure.setTimestamp(measureDto.getTimestamp());
+        measure.setDate(Date.from( Instant.parse(measureDto.getDate())));
         measure.setTemp(measureDto.getTemp());
         measure.setPressure(measureDto.getPressure());
         measure.setHumidity(measureDto.getHumidity());

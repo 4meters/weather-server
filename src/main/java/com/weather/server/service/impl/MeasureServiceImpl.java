@@ -1,9 +1,12 @@
 package com.weather.server.service.impl;
 
+import com.weather.server.domain.dto.MeasureByDateDto;
 import com.weather.server.domain.dto.MeasureDto;
+import com.weather.server.domain.dto.MeasureListDto;
 import com.weather.server.domain.entity.Measure;
 import com.weather.server.domain.entity.User;
 import com.weather.server.domain.mapper.MeasureMapper;
+import com.weather.server.domain.model.ISODate;
 import com.weather.server.domain.repository.MeasureRepository;
 import com.weather.server.domain.repository.UserRepository;
 import com.weather.server.service.MeasureService;
@@ -64,20 +67,32 @@ public class MeasureServiceImpl implements MeasureService {
 
     @Override
     public MeasureDto getLastMeasure() {
-        Measure measure =measureRepository.findFirstByOrderByIdDesc();
+        Measure measure =measureRepository.findFirstByOrderByDateDesc();
         //Measure measure=measureRepository.findByTemp("24.37");
         System.out.println(measure);
-        MeasureDto measureDto = new MeasureDto("",measure.timestamp, measure.temp, measure.humidity, measure.pressure, measure.pm25, measure.pm10, measure.pm25Corr);
+        MeasureDto measureDto = new MeasureDto("", ISODate.toString(measure.date), measure.temp, measure.humidity, measure.pressure, measure.pm25, measure.pm10, measure.pm25Corr);
         return measureDto;
     }
 
     @Override
-    public void getMeasureListByDate() {
-        Date dateFrom = Date.from( Instant.parse( "2012-07-06T10:39:40Z" ));
-        Date dateTo = Date.from( Instant.parse( "2014-07-08T10:39:40Z" ));
-        List <Measure> measureList = measureRepository.findByDateBetween(dateFrom,dateTo);
-        System.out.println(measureList);
-        //return measureList;
+    public MeasureListDto getMeasureListByDate(MeasureByDateDto measureByDateDto) {
+        //Date dateFrom = Date.from( Instant.parse( "2013-07-06T10:39:40Z" ));
+        //Date dateTo = Date.from( Instant.parse( "2013-07-08T10:39:40Z" ));
+        String userId=verifyApiKey(measureByDateDto.getApiKey());
+        if(userId!=null) {
+            Date dateFrom = Date.from( Instant.parse(measureByDateDto.getDateFrom()));
+            Date dateTo = Date.from( Instant.parse(measureByDateDto.getDateTo()));
+            List <Measure> measureList = measureRepository.findByDateBetween(dateFrom, dateTo, userId);
+
+            System.out.println(measureList);
+            //return measureList;
+            return new MeasureListDto(measureList);
+        }
+        else{
+            return null;
+        }
+
+
     }
 
 

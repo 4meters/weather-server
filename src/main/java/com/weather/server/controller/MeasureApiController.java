@@ -1,6 +1,8 @@
 package com.weather.server.controller;
 
+import com.weather.server.domain.dto.MeasureByDateDto;
 import com.weather.server.domain.dto.MeasureDto;
+import com.weather.server.domain.dto.MeasureListDto;
 import com.weather.server.service.MeasureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,9 +35,15 @@ public class MeasureApiController {
     }
 
     @GetMapping(value="/measure-by-date")
-    public ResponseEntity<?> getByDate(){
-        measureService.getMeasureListByDate();
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> getByDate(@RequestBody MeasureByDateDto measureByDateDto){
+        MeasureListDto measureListDto = measureService.getMeasureListByDate(measureByDateDto);
+        if(measureListDto!=null){
+            return new ResponseEntity<>(measureListDto, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
     }
 
 }

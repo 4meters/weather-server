@@ -27,7 +27,8 @@ public class UserApiController {
     @PostMapping(value = "/user/create")
     public ResponseEntity<?> createUser(@RequestBody UserLoginDto userLoginDto){
         boolean isCreated=userService.createUser(userLoginDto);
-        return isCreated? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return isCreated?
+                new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
     @PostMapping(value = "/user/login")
@@ -45,12 +46,14 @@ public class UserApiController {
     public ResponseEntity<?> getApiKey(@RequestBody UserLoginTokenDto userLoginTokenDto){
         //add return if token valid, user found, but key has to be generated or generate apikey if not generated
         UserApiKeyDto userApiKeyDto=userService.readApiKey(userLoginTokenDto.getToken());
-        return userApiKeyDto != null ? new ResponseEntity<UserApiKeyDto>(userApiKeyDto, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return userApiKeyDto != null ?
+                new ResponseEntity<UserApiKeyDto>(userApiKeyDto, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(value= "/user/generateApiKey")
     public ResponseEntity<?> generateApiKey(@RequestBody UserLoginTokenDto userLoginTokenDto){
-        return userService.generateApiKey(userLoginTokenDto) ? new ResponseEntity<UserApiKeyDto>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return userService.generateApiKey(userLoginTokenDto) ?
+                new ResponseEntity<UserApiKeyDto>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     //for testing

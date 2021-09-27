@@ -1,8 +1,10 @@
 package com.weather.server.domain.dto;
 
+import java.util.Date;
+
 public class MeasureDto {
     private String apiKey;
-    private String timestamp;
+    private String date;
     private String temp;
     private String humidity;
     private String pressure;
@@ -13,9 +15,9 @@ public class MeasureDto {
     public MeasureDto() {
     }
 
-    public MeasureDto(String apiKey, String timestamp, String temp, String humidity, String pressure, String pm25, String pm10, String pm25Corr) {
+    public MeasureDto(String apiKey, String date, String temp, String humidity, String pressure, String pm25, String pm10, String pm25Corr) {
         this.apiKey = apiKey;
-        this.timestamp = timestamp;
+        this.date = date;
         this.temp = temp;
         this.humidity = humidity;
         this.pressure = pressure;
@@ -29,8 +31,8 @@ public class MeasureDto {
         return apiKey;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public String getDate() {
+        return date;
     }
 
     public String getTemp() {
