@@ -3,7 +3,9 @@ package com.weather.server.domain.entity;
 
 import org.springframework.data.annotation.Id;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Measure {
 
@@ -11,29 +13,28 @@ public class Measure {
     public String id;
 
     public String userId;
-    public String timestamp; //TODO change String to date format for sorting
+    public Date date;
     public String temp;
     public String humidity;
     public String pressure;
     public String pm25;
-    public String pm10;
     public String pm25Corr;
-    public Date date;
+    public String pm10;
+
 
     public Measure() {
     }
 
-    public Measure(String userId, String timestamp, String temp, String humidity, String pressure, String pm25,
-                   String pm10, String pm25Corr, Date date) {
+    public Measure(String userId, Date date, String temp, String humidity, String pressure, String pm25,
+                   String pm10, String pm25Corr) {
         this.userId = userId;
-        this.timestamp = timestamp;
+        this.date = date;
         this.temp = temp;
         this.humidity = humidity;
         this.pressure = pressure;
         this.pm25 = pm25;
-        this.pm10 = pm10;
         this.pm25Corr = pm25Corr;
-        this.date = date;
+        this.pm10 = pm10;
     }
 
 
@@ -45,8 +46,8 @@ public class Measure {
         this.userId = userId;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setTemp(String temp) {
@@ -65,28 +66,30 @@ public class Measure {
         this.pm25 = pm25;
     }
 
+    public void setPm25Corr(String pm25Corr) {
+        this.pm25Corr = pm25Corr;
+    }
     public void setPm10(String pm10) {
         this.pm10 = pm10;
     }
 
-    public void setPm25Corr(String pm25Corr) {
-        this.pm25Corr = pm25Corr;
-    }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+
 
     @Override
     public String toString() {
+        SimpleDateFormat sdfISO = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        String isoDate = sdfISO.format(date);
+
         return "Measure{" +
                 "id='" + id + '\'' +
-                ", timestamp='" + timestamp + '\'' +
+                ", date='" + date + '\'' +
                 ", temp='" + temp + '\'' +
                 ", pressure='" + pressure + '\'' +
                 ", pm25='" + pm25 + '\'' +
-                ", pm10='" + pm10 + '\'' +
                 ", pm25Corr='" + pm25Corr + '\'' +
+                ", pm10='" + pm10 + '\'' +
+                ", date='" + isoDate + '\'' +
                 '}';
     }
 }
