@@ -7,9 +7,9 @@ import java.time.Instant;
 import java.util.Date;
 
 public class MeasureMapper {
-    public Measure mapToEntity(MeasureDto measureDto, String userId){
+    public Measure mapToEntity(MeasureDto measureDto, String stationId){
         Measure measure = new Measure();
-        measure.setUserId(userId);
+        measure.setStationId(stationId);
         measure.setDate(Date.from( Instant.parse(measureDto.getDate())));
         measure.setTemp(measureDto.getTemp());
         measure.setPressure(measureDto.getPressure());

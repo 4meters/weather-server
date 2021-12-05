@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value="/api")
+@RequestMapping(value="/api/measure")
 public class MeasureApiController {
 
     private MeasureService measureService;

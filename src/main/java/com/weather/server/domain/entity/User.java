@@ -2,6 +2,9 @@ package com.weather.server.domain.entity;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     @Id
     String id;
@@ -11,6 +14,7 @@ public class User {
     String password;
     String token;
     String apiKey;
+    List<String> stationIDList;
 
     public void setId(String id) {
         this.id = id;
@@ -36,6 +40,10 @@ public class User {
         return apiKey;
     }
 
+    public List<String> getStationIDList() {
+        return stationIDList;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -54,6 +62,10 @@ public class User {
 
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
+    }
+
+    public void setStationIDList(List<String> stationIDList) {
+        this.stationIDList = stationIDList;
     }
 
     @Override
