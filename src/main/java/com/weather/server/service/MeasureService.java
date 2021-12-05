@@ -7,6 +7,7 @@ import com.weather.server.domain.dto.MeasureListDto;
 public interface MeasureService {
     boolean saveMeasure(MeasureDto measureDto);
     String verifyApiKey(String apiKey);
+    boolean verifyStationId(String stationId);
 
     MeasureDto getLastMeasure();
     MeasureListDto getMeasureListByDate(MeasureByDateDto measureByDateDto);

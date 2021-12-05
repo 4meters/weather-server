@@ -8,7 +8,7 @@ public class MeasureDtoMapper {
     public MeasureDto mapToDto(Measure measure){
 
 
-        MeasureDto measureDto = new MeasureDto("", ISODate.toString(measure.date),measure.temp,measure.humidity,measure.pressure,measure.pm25,
+        MeasureDto measureDto = new MeasureDto("", measure.stationId, ISODate.toString(measure.date),measure.temp,measure.humidity,measure.pressure,measure.pm25,
                 measure.pm10,measure.pm25Corr);
         return measureDto;
     }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserApiController {
 
 
@@ -24,14 +24,14 @@ public class UserApiController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/user/create")
+    @PostMapping(value = "/create")
     public ResponseEntity<?> createUser(@RequestBody UserLoginDto userLoginDto){
         boolean isCreated=userService.createUser(userLoginDto);
         return isCreated?
                 new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
-    @PostMapping(value = "/user/login")
+    @PostMapping(value = "/login")
     public ResponseEntity<?> loginUser(@RequestBody UserLoginDto userLoginDto){
         UserLoginTokenDto userLoginSuccessDto=userService.loginUser(userLoginDto);
         if(userLoginSuccessDto!=null){
@@ -42,7 +42,7 @@ public class UserApiController {
         }
     }
 
-    @GetMapping(value = "/user/getApiKey")
+    @GetMapping(value = "/getApiKey")
     public ResponseEntity<?> getApiKey(@RequestBody UserLoginTokenDto userLoginTokenDto){
         //add return if token valid, user found, but key has to be generated or generate apikey if not generated
         UserApiKeyDto userApiKeyDto=userService.readApiKey(userLoginTokenDto.getToken());
@@ -50,11 +50,15 @@ public class UserApiController {
                 new ResponseEntity<UserApiKeyDto>(userApiKeyDto, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(value= "/user/generateApiKey")
+    @PostMapping(value= "/generateApiKey")
     public ResponseEntity<?> generateApiKey(@RequestBody UserLoginTokenDto userLoginTokenDto){
         return userService.generateApiKey(userLoginTokenDto) ?
                 new ResponseEntity<UserApiKeyDto>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    //add new station
+
+    //
 
     //for testing
 /*@GetMapping(value = "/user/test/readall")

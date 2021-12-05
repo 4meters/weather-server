@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class MeasureDto {
     private String apiKey;
+    private String stationID;
     private String date;
     private String temp;
     private String humidity;
@@ -11,12 +12,14 @@ public class MeasureDto {
     private String pm25;
     private String pm10;
     private String pm25Corr;
+    //station_id
 
     public MeasureDto() {
     }
 
-    public MeasureDto(String apiKey, String date, String temp, String humidity, String pressure, String pm25, String pm10, String pm25Corr) {
+    public MeasureDto(String apiKey, String stationID, String date, String temp, String humidity, String pressure, String pm25, String pm10, String pm25Corr) {
         this.apiKey = apiKey;
+        this.stationID = stationID;
         this.date = date;
         this.temp = temp;
         this.humidity = humidity;
@@ -29,6 +32,10 @@ public class MeasureDto {
 
     public String getApiKey() {
         return apiKey;
+    }
+
+    public String getStationID() {
+        return stationID;
     }
 
     public String getDate() {
