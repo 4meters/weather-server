@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
                     generateApiKey(new UserLoginTokenDto(token));
                     user = userRepository.findByToken(token);
                 }
-                return user.getApiKey().isEmpty() ? null : new UserApiKeyDto(user.getApiKey());
+                return user.getApiKey().isEmpty() ? null : new UserApiKeyDto.Builder().apiKey(user.getApiKey()).build();
             }
         }
         //find user by token

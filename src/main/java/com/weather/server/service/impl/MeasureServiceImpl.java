@@ -76,7 +76,7 @@ public class MeasureServiceImpl implements MeasureService {
 
     @Override
     public boolean verifyStationId(String stationId) {
-        Station station=stationRepository.findByStationID(stationId);
+        Station station=stationRepository.findByStationId(stationId);
         if(station == null){
             return false;
         }
@@ -93,7 +93,19 @@ public class MeasureServiceImpl implements MeasureService {
         Measure measure =measureRepository.findFirstByOrderByDateDesc();
         //Measure measure=measureRepository.findByTemp("24.37");
         System.out.println(measure);
-        MeasureDto measureDto = new MeasureDto("", "", ISODate.toString(measure.date), measure.temp, measure.humidity, measure.pressure, measure.pm25, measure.pm10, measure.pm25Corr);
+        MeasureDto measureDto = new MeasureDto.Builder()
+                .apiKey("")
+                .stationID(measure.stationId)
+                .date(ISODate.toString(measure.date))
+                .temp(measure.temp)
+                .humidity(measure.humidity)
+                .pm10(measure.pm10)
+                .pm25(measure.pm25)
+                .pm25Corr(measure.pm25Corr)
+                .pressure(measure.pressure)
+                .build();
+
+                //new MeasureDto("", "", ISODate.toString(measure.date), measure.temp, measure.humidity, measure.pressure, measure.pm25, measure.pm10, measure.pm25Corr);
         return measureDto;
     }
 
@@ -109,7 +121,9 @@ public class MeasureServiceImpl implements MeasureService {
 
             System.out.println(measureList);
             //return measureList;
-            return new MeasureListDto(measureList);
+            return new MeasureListDto.Builder()
+                    .measureList(measureList)
+                    .build();
         }
         else{
             return null;
