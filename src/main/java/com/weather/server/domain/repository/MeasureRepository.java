@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
-@Repository
+//@Repository
 public interface MeasureRepository extends MongoRepository<Measure, String>{
 
     //@Query(sort= "{ id: -1 }")

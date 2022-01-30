@@ -1,12 +1,13 @@
 package com.weather.server.service.impl;
 
+import com.weather.server.domain.dto.LastMeasureDto;
 import com.weather.server.domain.dto.MeasureByDateDto;
-import com.weather.server.domain.dto.MeasureDto;
+import com.weather.server.domain.dto.NewMeasureDto;
 import com.weather.server.domain.dto.MeasureListDto;
 import com.weather.server.domain.entity.Measure;
 import com.weather.server.domain.entity.Station;
 import com.weather.server.domain.entity.User;
-import com.weather.server.domain.mapper.MeasureMapper;
+import com.weather.server.domain.mapper.NewMeasureMapper;
 import com.weather.server.domain.model.ISODate;
 import com.weather.server.domain.repository.MeasureRepository;
 import com.weather.server.domain.repository.StationRepository;
@@ -42,12 +43,12 @@ public class MeasureServiceImpl implements MeasureService {
     }*/
 
     @Override
-    public boolean saveMeasure(MeasureDto measureDto) {
+    public boolean saveMeasure(NewMeasureDto newMeasureDto) {
         //sth wrong here
-        String userId=verifyApiKey(measureDto.getApiKey());
+        String userId=verifyApiKey(newMeasureDto.getApiKey());
         if(userId!=null){
-            if(verifyStationId(measureDto.getStationID())) {
-                Measure measure = new MeasureMapper().mapToEntity(measureDto, userId);
+            if(verifyStationId(newMeasureDto.getStationID())) {
+                Measure measure = new NewMeasureMapper().mapToEntity(newMeasureDto, userId);
                 measureRepository.save(measure);
                 return true;
             }
@@ -89,12 +90,11 @@ public class MeasureServiceImpl implements MeasureService {
     }
 
     @Override
-    public MeasureDto getLastMeasure() {
+    public LastMeasureDto getLastMeasure() {
         Measure measure =measureRepository.findFirstByOrderByDateDesc();
         //Measure measure=measureRepository.findByTemp("24.37");
         System.out.println(measure);
-        MeasureDto measureDto = new MeasureDto.Builder()
-                .apiKey("")
+        LastMeasureDto lastMeasureDto = new LastMeasureDto.Builder()
                 .stationID(measure.stationId)
                 .date(ISODate.toString(measure.date))
                 .temp(measure.temp)
@@ -105,8 +105,8 @@ public class MeasureServiceImpl implements MeasureService {
                 .pressure(measure.pressure)
                 .build();
 
-                //new MeasureDto("", "", ISODate.toString(measure.date), measure.temp, measure.humidity, measure.pressure, measure.pm25, measure.pm10, measure.pm25Corr);
-        return measureDto;
+                //new NewMeasureDto("", "", ISODate.toString(measure.date), measure.temp, measure.humidity, measure.pressure, measure.pm25, measure.pm10, measure.pm25Corr);
+        return lastMeasureDto;
     }
 
     @Override

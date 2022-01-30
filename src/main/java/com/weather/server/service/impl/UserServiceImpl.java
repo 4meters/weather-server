@@ -1,25 +1,33 @@
 package com.weather.server.service.impl;
 
 import com.weather.server.domain.dto.UserApiKeyDto;
+import com.weather.server.domain.dto.UserAssignStationDto;
 import com.weather.server.domain.dto.UserLoginDto;
 import com.weather.server.domain.dto.UserLoginTokenDto;
+import com.weather.server.domain.entity.Station;
 import com.weather.server.domain.entity.User;
 import com.weather.server.domain.mapper.UserMapper;
 import com.weather.server.domain.model.TokenGenerator;
 import com.weather.server.domain.model.UserIdGenerator;
+import com.weather.server.domain.repository.StationRepository;
 import com.weather.server.domain.repository.UserRepository;
 import com.weather.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final StationRepository stationRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, StationRepository stationRepository) {
         this.userRepository=userRepository;
+        this.stationRepository=stationRepository;
     }
 
     @Override
@@ -104,6 +112,37 @@ public class UserServiceImpl implements UserService {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean assignStationId(UserAssignStationDto userAssignStationDto) {
+        User user = userRepository.findByToken(userAssignStationDto.getToken());
+
+        if(checkToken(userAssignStationDto.getToken())){
+            if(checkStationId(userAssignStationDto.getStationId())){
+                List<String> stationIDList=  user.getStationIDList();
+                stationIDList.add(userAssignStationDto.getStationId());
+                user.setStationIDList(stationIDList);
+                userRepository.save(user);
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    private boolean checkStationId(String stationId) {
+        Station station = stationRepository.findByStationId(stationId);
+        if(station != null){
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     @Override
