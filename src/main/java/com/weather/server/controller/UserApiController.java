@@ -1,6 +1,7 @@
 package com.weather.server.controller;
 
 import com.weather.server.domain.dto.UserApiKeyDto;
+import com.weather.server.domain.dto.UserAssignStationDto;
 import com.weather.server.domain.dto.UserLoginDto;
 import com.weather.server.domain.dto.UserLoginTokenDto;
 import com.weather.server.service.UserService;
@@ -55,6 +56,12 @@ public class UserApiController {
         return userService.generateApiKey(userLoginTokenDto) ?
                 new ResponseEntity<UserApiKeyDto>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    /*@PostMapping(value= "/assign-station")
+    public ResponseEntity<?> assign-station(@RequestBody UserAssignStationDto userAssignStationDto){
+        return userService.assignStationId(userAssignStationDto) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }*/
 
     //add new station
 

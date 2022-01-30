@@ -8,10 +8,20 @@ public class Station { //? seperate one collection for existing, produced statio
     @Id
     String id;
 
+    String stationName;
     String stationId;
-    String visibility;
+    Boolean visible;
     String geolocationCoordinateN;
     String geolocationCoordinateE;
+
+    public String getStationName() {
+        return stationName;
+    }
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
 
     public String getId() {
         return id;
@@ -21,8 +31,8 @@ public class Station { //? seperate one collection for existing, produced statio
         return stationId;
     }
 
-    public String getVisibility() {
-        return visibility;
+    public Boolean getVisibility() {
+        return visible;
     }
 
     public String getGeolocationCoordinateN() {
@@ -49,17 +59,24 @@ public class Station { //? seperate one collection for existing, produced statio
         this.stationId = stationId;
     }
 
-    public void setVisibility(String visibility) {
-        this.visibility = visibility;
+    public void setVisibility(Boolean visibility) {
+        this.visible = visibility;
     }
 
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
 
     @Override
     public String toString() {
         return "Station{" +
                 "id='" + id + '\'' +
                 ", stationId='" + stationId + '\'' +
-                ", visibility='" + visibility + '\'' +
+                ", visibility='" + visible + '\'' +
                 ", geolocationCoordinateN='" + geolocationCoordinateN + '\'' +
                 ", geolocationCoordinateE='" + geolocationCoordinateE + '\'' +
                 '}';
