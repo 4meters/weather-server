@@ -10,7 +10,7 @@ public class LastMeasureDtoMapper {
 
         NewMeasureDto newMeasureDto = new NewMeasureDto.Builder()
                 .apiKey("")
-                .stationID(measure.stationId)
+                .stationId(measure.stationId)
                 .date(ISODate.toString(measure.date))
                 .temp(measure.temp)
                 .humidity(measure.humidity)

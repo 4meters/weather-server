@@ -8,20 +8,15 @@ public class Station { //? seperate one collection for existing, produced statio
     @Id
     String id;
 
-    String stationName;
     String stationId;
     Boolean visible;
     String geolocationCoordinateN;
     String geolocationCoordinateE;
 
-    public String getStationName() {
-        return stationName;
-    }
 
     public Boolean getVisible() {
         return visible;
     }
-
 
     public String getId() {
         return id;
@@ -61,10 +56,6 @@ public class Station { //? seperate one collection for existing, produced statio
 
     public void setVisibility(Boolean visibility) {
         this.visible = visibility;
-    }
-
-    public void setStationName(String stationName) {
-        this.stationName = stationName;
     }
 
     public void setVisible(Boolean visible) {

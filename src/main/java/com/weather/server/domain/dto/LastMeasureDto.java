@@ -1,7 +1,7 @@
 package com.weather.server.domain.dto;
 
 public class LastMeasureDto {
-    private String stationID;
+    private String stationId;
     private String date;
     private String temp;
     private String humidity;
@@ -16,7 +16,7 @@ public class LastMeasureDto {
 
 
     private LastMeasureDto(Builder builder){
-        stationID = builder.stationID;
+        stationId = builder.stationId;
         date = builder.date;
         temp = builder.temp;
         humidity = builder.humidity;
@@ -28,8 +28,8 @@ public class LastMeasureDto {
 
 
 
-    public String getStationID() {
-        return stationID;
+    public String getStationId() {
+        return stationId;
     }
 
     public String getDate() {
@@ -62,7 +62,7 @@ public class LastMeasureDto {
 
 
     public static final class Builder {
-        private String stationID;
+        private String stationId;
         private String date;
         private String temp;
         private String humidity;
@@ -75,8 +75,8 @@ public class LastMeasureDto {
         }
 
 
-        public Builder stationID(String stationID) {
-            this.stationID = stationID;
+        public Builder stationId(String stationId) {
+            this.stationId = stationId;
             return this;
         }
 

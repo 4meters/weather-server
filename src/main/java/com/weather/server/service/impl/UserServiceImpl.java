@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    @Override
+    @Override //TODO check this, review all class
     public boolean assignStationId(UserAssignStationDto userAssignStationDto) {
         User user = userRepository.findByToken(userAssignStationDto.getToken());
 
