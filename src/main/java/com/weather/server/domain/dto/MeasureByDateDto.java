@@ -3,13 +3,21 @@ package com.weather.server.domain.dto;
 
 public class MeasureByDateDto {
     String apiKey;
+    String stationId;
     String dateFrom;
     String dateTo;
 
-    public MeasureByDateDto(String apiKey, String dateFrom, String dateTo) {
+
+    public MeasureByDateDto(String apiKey, String stationId, String dateFrom, String dateTo) {
         this.apiKey = apiKey;
+        this.stationId = stationId;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+
+    }
+
+    public String getStationId() {
+        return stationId;
     }
 
     public String getDateFrom() {
@@ -23,4 +31,6 @@ public class MeasureByDateDto {
     public String getApiKey() {
         return apiKey;
     }
+
+
 }

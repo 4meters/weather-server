@@ -1,13 +1,18 @@
 package com.weather.server.service;
 
-import com.weather.server.domain.dto.MeasureByDateDto;
-import com.weather.server.domain.dto.MeasureDto;
-import com.weather.server.domain.dto.MeasureListDto;
+import com.weather.server.domain.dto.*;
+
+import java.util.List;
 
 public interface MeasureService {
-    boolean saveMeasure(MeasureDto measureDto);
+    boolean saveMeasure(NewMeasureDto newMeasureDto);
     String verifyApiKey(String apiKey);
+    boolean verifyStationId(String stationId);
 
-    MeasureDto getLastMeasure();
+    LastMeasureDto getLastMeasure();
     MeasureListDto getMeasureListByDate(MeasureByDateDto measureByDateDto);
+
+    boolean saveMeasurePackage(List<NewMeasureDto> measureList);
+
+    MeasureListDto getMeasureDatabase();
 }
