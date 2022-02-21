@@ -12,7 +12,8 @@ public class Measure {
     @Id
     public String id;
 
-    public String userId;
+    //public String userId;
+    public String stationId;
     public Date date;
     public String temp;
     public String humidity;
@@ -25,9 +26,9 @@ public class Measure {
     public Measure() {
     }
 
-    public Measure(String userId, Date date, String temp, String humidity, String pressure, String pm25,
+    public Measure(String stationId, Date date, String temp, String humidity, String pressure, String pm25,
                    String pm10, String pm25Corr) {
-        this.userId = userId;
+        this.stationId = stationId;
         this.date = date;
         this.temp = temp;
         this.humidity = humidity;
@@ -42,8 +43,8 @@ public class Measure {
         this.id = id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setStationId(String stationId) {
+        this.stationId = stationId;
     }
 
     public void setDate(Date date) {
