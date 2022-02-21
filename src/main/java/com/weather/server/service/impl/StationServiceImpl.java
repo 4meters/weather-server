@@ -18,7 +18,7 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<Station> getStationList(String token) {
+    public List<Station> getStationList(String token) {//TODO sth
         List<Station> stationList;
         //if(token==null || token.equals("")){
          //   stationList =  stationRepository.findAllByVisibility(true); //visible

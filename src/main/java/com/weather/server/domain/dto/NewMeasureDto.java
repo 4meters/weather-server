@@ -2,7 +2,7 @@ package com.weather.server.domain.dto;
 
 public class NewMeasureDto {
     private String apiKey;
-    private String stationID;
+    private String stationId;
     private String date;
     private String temp;
     private String humidity;
@@ -17,7 +17,7 @@ public class NewMeasureDto {
 
     private NewMeasureDto(Builder builder){
         apiKey = builder.apiKey;
-        stationID = builder.stationID;
+        stationId = builder.stationId;
         date = builder.date;
         temp = builder.temp;
         humidity = builder.humidity;
@@ -27,13 +27,27 @@ public class NewMeasureDto {
         pm25Corr = builder.pm25Corr;
     }
 
+    @Override
+    public String toString() {
+        return "NewMeasureDto{" +
+                "apiKey='" + apiKey + '\'' +
+                ", stationId='" + stationId + '\'' +
+                ", date='" + date + '\'' +
+                ", temp='" + temp + '\'' +
+                ", humidity='" + humidity + '\'' +
+                ", pressure='" + pressure + '\'' +
+                ", pm25='" + pm25 + '\'' +
+                ", pm10='" + pm10 + '\'' +
+                ", pm25Corr='" + pm25Corr + '\'' +
+                '}';
+    }
 
     public String getApiKey() {
         return apiKey;
     }
 
-    public String getStationID() {
-        return stationID;
+    public String getStationId() {
+        return stationId;
     }
 
     public String getDate() {
@@ -67,7 +81,7 @@ public class NewMeasureDto {
 
     public static final class Builder {
         private String apiKey;
-        private String stationID;
+        private String stationId;
         private String date;
         private String temp;
         private String humidity;
@@ -84,8 +98,8 @@ public class NewMeasureDto {
             return this;
         }
 
-        public Builder stationID(String stationID) {
-            this.stationID = stationID;
+        public Builder stationId(String stationId) {
+            this.stationId = stationId;
             return this;
         }
 
@@ -126,6 +140,21 @@ public class NewMeasureDto {
 
         public NewMeasureDto build() {
             return new NewMeasureDto(this);
+        }
+
+        @Override
+        public String toString() {
+            return "Builder{" +
+                    "apiKey='" + apiKey + '\'' +
+                    ", stationId='" + stationId + '\'' +
+                    ", date='" + date + '\'' +
+                    ", temp='" + temp + '\'' +
+                    ", humidity='" + humidity + '\'' +
+                    ", pressure='" + pressure + '\'' +
+                    ", pm25='" + pm25 + '\'' +
+                    ", pm10='" + pm10 + '\'' +
+                    ", pm25Corr='" + pm25Corr + '\'' +
+                    '}';
         }
     }
 }
