@@ -1,6 +1,7 @@
 package com.weather.server.service;
 
 import com.weather.server.domain.dto.UserApiKeyDto;
+import com.weather.server.domain.dto.UserAssignStationDto;
 import com.weather.server.domain.dto.UserLoginDto;
 import com.weather.server.domain.dto.UserLoginTokenDto;
 
@@ -10,6 +11,8 @@ public interface UserService {
     boolean generateApiKey(UserLoginTokenDto userLoginTokenDto);
     UserApiKeyDto readApiKey(String token);
     boolean checkToken(String token);
+
+    boolean assignStationId(UserAssignStationDto userAssignStationDto);
 
     boolean verifyEmail();
 }
