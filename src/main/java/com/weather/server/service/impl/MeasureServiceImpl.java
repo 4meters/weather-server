@@ -132,7 +132,7 @@ public class MeasureServiceImpl implements MeasureService {
                 //TODO FIX or fixed already? Check
                 List<Measure> measureList = measureRepository.findByDateBetween(dateFrom, dateTo, stationId);
 
-                System.out.println(measureList);
+                //System.out.println(measureList);
                 //return measureList;
                 return new MeasureListDto.Builder()
                         .measureList(measureList)
@@ -152,7 +152,7 @@ public class MeasureServiceImpl implements MeasureService {
     @Override
     public boolean saveMeasurePackage(List<NewMeasureDto> measureList) {
         for(NewMeasureDto newMeasureDto : measureList){
-            System.out.println(newMeasureDto);
+            //System.out.println(newMeasureDto);
             boolean result = saveMeasure(newMeasureDto);
             if(result==false){
                 return false;
@@ -168,7 +168,7 @@ public class MeasureServiceImpl implements MeasureService {
     public MeasureListDto getMeasureDatabase() {
         List<Measure> measureList = measureRepository.findAll();
 
-        System.out.println(measureList);
+        //System.out.println(measureList);
         //return measureList;
         return new MeasureListDto.Builder()
                 .measureList(measureList)
