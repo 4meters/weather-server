@@ -1,9 +1,8 @@
 package com.weather.server.controller;
 
-import com.weather.server.domain.dto.UserApiKeyDto;
-import com.weather.server.domain.dto.UserAssignStationDto;
-import com.weather.server.domain.dto.UserLoginDto;
-import com.weather.server.domain.dto.UserLoginTokenDto;
+import com.weather.server.domain.dto.user.UserApiKeyDto;
+import com.weather.server.domain.dto.user.UserLoginDto;
+import com.weather.server.domain.dto.user.UserLoginTokenDto;
 import com.weather.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

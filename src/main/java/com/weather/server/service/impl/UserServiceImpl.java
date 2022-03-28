@@ -1,9 +1,9 @@
 package com.weather.server.service.impl;
 
-import com.weather.server.domain.dto.UserApiKeyDto;
-import com.weather.server.domain.dto.UserAssignStationDto;
-import com.weather.server.domain.dto.UserLoginDto;
-import com.weather.server.domain.dto.UserLoginTokenDto;
+import com.weather.server.domain.dto.user.UserApiKeyDto;
+import com.weather.server.domain.dto.user.UserAssignStationDto;
+import com.weather.server.domain.dto.user.UserLoginDto;
+import com.weather.server.domain.dto.user.UserLoginTokenDto;
 import com.weather.server.domain.entity.Station;
 import com.weather.server.domain.entity.User;
 import com.weather.server.domain.mapper.UserMapper;
@@ -15,7 +15,6 @@ import com.weather.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
