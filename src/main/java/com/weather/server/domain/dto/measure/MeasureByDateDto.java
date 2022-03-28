@@ -1,4 +1,4 @@
-package com.weather.server.domain.dto;
+package com.weather.server.domain.dto.measure;
 
 
 public class MeasureByDateDto {
@@ -13,7 +13,6 @@ public class MeasureByDateDto {
         this.stationId = stationId;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
-
     }
 
     public String getStationId() {

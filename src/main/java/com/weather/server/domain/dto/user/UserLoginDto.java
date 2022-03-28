@@ -1,8 +1,11 @@
-package com.weather.server.domain.dto;
+package com.weather.server.domain.dto.user;
 
 public class UserLoginDto {
     private String email;
     private String password;
+
+    public UserLoginDto() {
+    }
 
     public UserLoginDto(Builder builder) {
         this.email = builder.email;

@@ -1,4 +1,4 @@
-package com.weather.server.domain.dto;
+package com.weather.server.domain.dto.user;
 
 public class UserResetDto {
     String email;

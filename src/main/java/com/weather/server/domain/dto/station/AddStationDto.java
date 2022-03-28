@@ -1,4 +1,4 @@
-package com.weather.server.domain.dto;
+package com.weather.server.domain.dto.station;
 
 public class AddStationDto {
     private String stationId;

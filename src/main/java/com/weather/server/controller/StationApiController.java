@@ -1,7 +1,7 @@
 package com.weather.server.controller;
 
-import com.weather.server.domain.dto.AddStationDto;
-import com.weather.server.domain.dto.StationListDto;
+import com.weather.server.domain.dto.station.StationListDto;
+import com.weather.server.domain.dto.station.VerifyStationDto;
 import com.weather.server.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +28,13 @@ public class StationApiController {
         return new ResponseEntity<>(new StationListDto.Builder().stationList(stationService.getStationList("")).build()
                 , HttpStatus.OK);
 
+    }
+
+    @PostMapping(value = "/verify-station")
+    public ResponseEntity<?> verifyStation(@RequestBody VerifyStationDto verifyStationDto){
+        return stationService.verifyStationId(verifyStationDto) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        //TODO verify token
     }
 
     /*@PostMapping(value="/add-station")
