@@ -1,8 +1,4 @@
-package com.weather.server.domain.dto;
-
-import com.weather.server.domain.entity.Measure;
-
-import java.util.List;
+package com.weather.server.domain.dto.user;
 
 public class UserApiKeyDto {
     String apiKey;

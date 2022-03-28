@@ -1,6 +1,5 @@
-package com.weather.server.domain.dto;
+package com.weather.server.domain.dto.station;
 
-import com.weather.server.domain.entity.Measure;
 import com.weather.server.domain.entity.Station;
 
 import java.util.List;

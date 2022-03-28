@@ -1,9 +1,9 @@
 package com.weather.server.service;
 
-import com.weather.server.domain.dto.UserApiKeyDto;
-import com.weather.server.domain.dto.UserAssignStationDto;
-import com.weather.server.domain.dto.UserLoginDto;
-import com.weather.server.domain.dto.UserLoginTokenDto;
+import com.weather.server.domain.dto.user.UserApiKeyDto;
+import com.weather.server.domain.dto.user.UserAssignStationDto;
+import com.weather.server.domain.dto.user.UserLoginDto;
+import com.weather.server.domain.dto.user.UserLoginTokenDto;
 
 public interface UserService {
     boolean createUser(UserLoginDto userLoginDto);
@@ -15,4 +15,6 @@ public interface UserService {
     boolean assignStationId(UserAssignStationDto userAssignStationDto);
 
     boolean verifyEmail();
+    //TODO verify password
+    //TODO reset password?
 }
