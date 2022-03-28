@@ -1,6 +1,6 @@
 package com.weather.server.domain.mapper;
 
-import com.weather.server.domain.dto.UserLoginDto;
+import com.weather.server.domain.dto.user.UserLoginDto;
 import com.weather.server.domain.entity.User;
 
 public class UserMapper {

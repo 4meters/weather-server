@@ -1,4 +1,4 @@
-package com.weather.server.domain.dto;
+package com.weather.server.domain.dto.user;
 
 public class UserLoginTokenDto {
     private String token;
