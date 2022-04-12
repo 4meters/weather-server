@@ -2,7 +2,6 @@ package com.weather.server.domain.entity;
 
 import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -10,11 +9,19 @@ public class User {
     String id;
 
     String userId;
-    String email;
+    String login;
     String password;
     String token;
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
     String apiKey;
-    List<String> stationIDList;
 
     public void setId(String id) {
         this.id = id;
@@ -24,8 +31,8 @@ public class User {
         return userId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
     public String getPassword() {
@@ -36,20 +43,14 @@ public class User {
         return token;
     }
 
-    public String getApiKey() {
-        return apiKey;
-    }
 
-    public List<String> getStationIDList() {
-        return stationIDList;
-    }
 
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public void setPassword(String password) {
@@ -60,22 +61,14 @@ public class User {
         this.token = token;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    public void setStationIDList(List<String> stationIDList) {
-        this.stationIDList = stationIDList;
-    }
 
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", email='" + email + '\'' +
+                ", email='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", token='" + token + '\'' +
-                ", apiKey='" + apiKey + '\'' +
                 '}';
     }
 }

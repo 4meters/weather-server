@@ -1,8 +1,11 @@
 package com.weather.server.controller;
 
+import com.weather.server.domain.dto.station.AddStationDto;
 import com.weather.server.domain.dto.station.StationListDto;
+import com.weather.server.domain.dto.station.StationNameDto;
 import com.weather.server.domain.dto.station.VerifyStationDto;
 import com.weather.server.service.StationService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,7 @@ public class StationApiController {
         this.stationService = stationService;
     }
 
-    @GetMapping(value="/get-stationlist{token}")
+    /*@GetMapping(value="/get-stationlist{token}")
     public ResponseEntity<?> getStation(){
         //if api key is valid
         //stationService.getStationList()
@@ -28,13 +31,34 @@ public class StationApiController {
         return new ResponseEntity<>(new StationListDto.Builder().stationList(stationService.getStationList("")).build()
                 , HttpStatus.OK);
 
+    }*/
+
+    @GetMapping(value="/get-public-stationlist")
+    public ResponseEntity<?> getPublicStationList(){
+        return new ResponseEntity<>(new StationListDto.Builder().stationList(stationService.getPublicStationList()).build()
+                , HttpStatus.OK);
+
+    }
+
+
+    @GetMapping(value="/get-station-name/{stationId}")
+    public ResponseEntity<?> getStationName(@PathVariable String stationId){
+        StationNameDto stationNameDto = stationService.getStationName(stationId);
+        return stationNameDto!=null ? new ResponseEntity<>(stationNameDto, HttpStatus.OK)
+        : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
     @PostMapping(value = "/verify-station")
     public ResponseEntity<?> verifyStation(@RequestBody VerifyStationDto verifyStationDto){
         return stationService.verifyStationId(verifyStationDto) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping(value = "/add-station-on-map")
+    public ResponseEntity<?> addStationOnMap(@RequestBody AddStationDto addStationDto){
+        return stationService.addStationOnMap(addStationDto) ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        //TODO verify token
     }
 
     /*@PostMapping(value="/add-station")

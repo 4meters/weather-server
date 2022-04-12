@@ -1,29 +1,61 @@
 package com.weather.server.domain.dto.station;
 
 public class AddStationDto {
+
+    private String token;
     private String stationId;
     private Boolean visible;
-    private String geolocationCoordinateN;
-    private String geolocationCoordinateE;
+    private String lat;//TODO check if string?
+    private String lng;
+    private String stationName;
 
-    public AddStationDto(Builder builder) {
-        this.stationId = builder.stationId;
-        this.visible = builder.visible;
-        this.geolocationCoordinateN = builder.geolocationCoordinateN;
-        this.geolocationCoordinateE = builder.geolocationCoordinateE;
+
+    public AddStationDto() {
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public String getStationId() {
+        return stationId;
+    }
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public String getStationName() {
+        return stationName;
+    }
+
+
     public static final class Builder {
+        private String token;
         private String stationId;
         private Boolean visible;
-        private String geolocationCoordinateN;
-        private String geolocationCoordinateE;
+        private String lat;//TODO check if string?
+        private String lng;
+        private String stationName;
 
         private Builder() {
         }
 
         public static Builder anAddStationDto() {
             return new Builder();
+        }
+
+        public Builder token(String token) {
+            this.token = token;
+            return this;
         }
 
         public Builder stationId(String stationId) {
@@ -36,18 +68,30 @@ public class AddStationDto {
             return this;
         }
 
-        public Builder geolocationCoordinateN(String geolocationCoordinateN) {
-            this.geolocationCoordinateN = geolocationCoordinateN;
+        public Builder lat(String lat) {
+            this.lat = lat;
             return this;
         }
 
-        public Builder geolocationCoordinateE(String geolocationCoordinateE) {
-            this.geolocationCoordinateE = geolocationCoordinateE;
+        public Builder lng(String lng) {
+            this.lng = lng;
+            return this;
+        }
+
+        public Builder stationName(String stationName) {
+            this.stationName = stationName;
             return this;
         }
 
         public AddStationDto build() {
-            return new AddStationDto(this);
+            AddStationDto addStationDto = new AddStationDto();
+            addStationDto.token = this.token;
+            addStationDto.stationName = this.stationName;
+            addStationDto.visible = this.visible;
+            addStationDto.lng = this.lng;
+            addStationDto.lat = this.lat;
+            addStationDto.stationId = this.stationId;
+            return addStationDto;
         }
     }
 }

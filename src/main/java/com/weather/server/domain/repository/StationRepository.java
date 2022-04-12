@@ -12,6 +12,7 @@ import java.util.List;
 
 @Repository
 public interface StationRepository extends MongoRepository<Station, String> {
+
     Station findByStationId(String stationId);
 
     //@Query(value = "{'date':{ $gte: ?0, $lte: ?1}, 'userId': {$eq: ?2}}")

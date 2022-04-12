@@ -3,16 +3,16 @@ package com.weather.server.domain.dto.chart;
 import java.util.Date;
 
 public class ChartTempDto {
-    private Date date;
+    private String date;
     private Float temp;
 
 
-    public ChartTempDto(Date date, Float temp) {
+    public ChartTempDto(String date, Float temp) {
         this.date = date;
         this.temp = temp;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -20,7 +20,7 @@ public class ChartTempDto {
         return temp;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
