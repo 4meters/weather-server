@@ -1,10 +1,9 @@
 package com.weather.server.controller;
 
-import com.weather.server.domain.dto.chart.ChartTempListDto;
+import com.weather.server.domain.dto.chart.ChartListDto;
 import com.weather.server.domain.dto.measure.*;
 import com.weather.server.service.MeasureService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,7 @@ public class MeasureApiController {
         this.measureService = measureService;
     }
 
-    @PostMapping(value="/new-measure") //addStation id
+    @PostMapping(value="/new-measure") //addStation id //TODO add checking if stationId exists in database and its assigned to user maybe?
     public ResponseEntity<Void> newMeasure(@RequestBody NewMeasureDto newMeasureDto){
         //if api key is valid
         return measureService.saveMeasure(newMeasureDto) ? new ResponseEntity<>(HttpStatus.OK) :
@@ -41,6 +40,11 @@ public class MeasureApiController {
         return new ResponseEntity<>(measureService.getLastMeasure(stationId), HttpStatus.OK);
     }
 
+    @GetMapping(value="/last-measure-all") //add stationID
+    public ResponseEntity<LastMeasureListDto> getLastAll(){
+        return new ResponseEntity<>(measureService.getLastMeasureAllPublic(), HttpStatus.OK);
+    }
+
     @GetMapping(value="/measure-by-date") //TODO added, test later
     public ResponseEntity<?> getByDate(@RequestBody MeasureByDateDto measureByDateDto){
         MeasureListDto measureListDto = measureService.getMeasureListByDate(measureByDateDto);
@@ -54,11 +58,11 @@ public class MeasureApiController {
     }
 
     @PostMapping(value="/measure-by-date-chart") //TODO added, test later
-    public ResponseEntity<?> getByDateChart(@RequestBody MeasureByDateDto measureByDateDto){
-        ChartTempListDto chartTempListDto = measureService.getMeasuresForChart(measureByDateDto);
+    public ResponseEntity<?> getByDateChart(@RequestBody MeasureByDateChartDto measureByDateChartDto){
+        ChartListDto chartTempListDto = measureService.getMeasuresForChart(measureByDateChartDto);
         if(chartTempListDto!=null){
             return new ResponseEntity<>(chartTempListDto, HttpStatus.OK);
-        }
+        }//TODO maybe change apiKey to token and verify if user station is private if yes than verify token, verify not succesful -> 403
         else{
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
