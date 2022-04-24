@@ -1,11 +1,7 @@
 package com.weather.server.controller;
 
-import com.weather.server.domain.dto.station.AddStationDto;
-import com.weather.server.domain.dto.station.StationListDto;
-import com.weather.server.domain.dto.station.StationNameDto;
-import com.weather.server.domain.dto.station.VerifyStationDto;
+import com.weather.server.domain.dto.station.*;
 import com.weather.server.service.StationService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +29,7 @@ public class StationApiController {
 
     }*/
 
-    @GetMapping(value="/get-public-stationlist")
+    @GetMapping(value="/get-public-stationlist")//TODO seperate DTO for Station - can't use direct db entine because of station key
     public ResponseEntity<?> getPublicStationList(){
         return new ResponseEntity<>(new StationListDto.Builder().stationList(stationService.getPublicStationList()).build()
                 , HttpStatus.OK);
@@ -51,7 +47,7 @@ public class StationApiController {
 
     @PostMapping(value = "/verify-station")
     public ResponseEntity<?> verifyStation(@RequestBody VerifyStationDto verifyStationDto){
-        return stationService.verifyStationId(verifyStationDto) ?
+        return stationService.verifyStationIdAndStationKey(verifyStationDto) ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -59,6 +55,26 @@ public class StationApiController {
     public ResponseEntity<?> addStationOnMap(@RequestBody AddStationDto addStationDto){
         return stationService.addStationOnMap(addStationDto) ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @PostMapping(value = "/mode-switch")
+    public ResponseEntity<?> modeSwitchStation(@RequestBody StationModeSwitchDto stationModeSwitchDto){
+        return stationService.modeSwitch(stationModeSwitchDto) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    //TODO - verify if station is in user list
+    @PostMapping(value = "/set-measure-interval")
+    public ResponseEntity<?> setMeasureInterval(@RequestBody StationSetMeasureIntervalDto stationSetMeasureIntervalDto){
+        return stationService.setMeasureInterval(stationSetMeasureIntervalDto) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping(value="/get-working-mode/{stationId}") //?used by weather station measure script only?
+    public ResponseEntity<?> getCurrentMode(@PathVariable String stationId){
+        StationCurrentModeDto stationCurrentModeDto = stationService.getCurrentMode(stationId);
+        return stationCurrentModeDto!=null ? new ResponseEntity<>(stationCurrentModeDto, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
     /*@PostMapping(value="/add-station")

@@ -1,9 +1,6 @@
 package com.weather.server.service.impl;
 
-import com.weather.server.domain.dto.station.AddStationDto;
-import com.weather.server.domain.dto.station.StationListDto;
-import com.weather.server.domain.dto.station.StationNameDto;
-import com.weather.server.domain.dto.station.VerifyStationDto;
+import com.weather.server.domain.dto.station.*;
 import com.weather.server.domain.dto.user.UserStationListDto;
 import com.weather.server.domain.entity.Station;
 import com.weather.server.domain.entity.UserStationList;
@@ -17,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -71,9 +69,24 @@ public class StationServiceImpl implements StationService {
 
     }
 
+    @Override
+    public boolean verifyStationId(String stationId) {//TODO refactor
+        Station station=stationRepository.findByStationId(stationId);
+        if(station == null){
+            return false;
+        }
+        else if(station.getStationId().equals(stationId)) {
+            return true;
+
+        }
+        else{
+            return false;
+        }
+    }
+
 
     @Override
-    public boolean verifyStationId(VerifyStationDto verifyStationDto) {
+    public boolean verifyStationIdAndStationKey(VerifyStationDto verifyStationDto) {
         String stationId=verifyStationDto.getStationId();
         String stationKey=verifyStationDto.getStationKey();
         String token=verifyStationDto.getToken();
@@ -181,6 +194,78 @@ public class StationServiceImpl implements StationService {
 
         return null;
     }
+
+    @Override
+    public boolean modeSwitch(StationModeSwitchDto stationModeSwitchDto) {
+        if(userService.checkToken(stationModeSwitchDto.getToken())) {
+            if (verifyStationId(stationModeSwitchDto.getStationId())) {
+                Station station = stationRepository.findByStationId(stationModeSwitchDto.getStationId());
+                switch (stationModeSwitchDto.getMode()) {
+                    case "disable": {
+                        station.setActive(false);
+                        stationRepository.save(station);
+                        break;
+                    }
+                    case "enable": {
+                        station.setActive(true);
+                        stationRepository.save(station);
+                        break;
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean setMeasureInterval(StationSetMeasureIntervalDto stationSetMeasureIntervalDto) {
+        List<String> availableMeasureIntervals = Arrays.asList("3min","5min","10min","15min");
+
+        //TODO verify if station is in user list
+        if(userService.checkToken(stationSetMeasureIntervalDto.getToken())) {
+            if (verifyStationId(stationSetMeasureIntervalDto.getStationId())) {
+                Station station = stationRepository.findByStationId(stationSetMeasureIntervalDto.getStationId());
+                if(availableMeasureIntervals.contains(stationSetMeasureIntervalDto.getMeasureInterval())){
+                    //System.out.println("OK");
+                    station.setMeasureInterval(stationSetMeasureIntervalDto.getMeasureInterval());
+                    stationRepository.save(station);
+                    return true;
+                    /*station.setMeasureInterval("3min");
+                    stationRepository.save(station);
+                    break;*/
+                }
+            } else {
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public StationCurrentModeDto getCurrentMode(String stationId) {
+        if (verifyStationId(stationId)) {
+            Station station = stationRepository.findByStationId(stationId);
+            String mode = station.getActive() ? "enabled" : "disabled";
+            return new StationCurrentModeDto.Builder()
+                    .stationId(stationId)
+                    .mode(mode)
+                    .measureInterval(station.getMeasureInterval())
+                    .build();
+            }
+        else {
+            return null;
+        }
+    }
+
+
     /*public boolean verifyStationId(String stationId) {
         Station station = stationRepository.findByStationId(stationId);
         if(station!=null){

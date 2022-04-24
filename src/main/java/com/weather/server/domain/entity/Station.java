@@ -14,6 +14,23 @@ public class Station { //? seperate one collection for existing, produced statio
     String stationName;
     Boolean isActive;//TODO
     Boolean isAssigned;
+    String measureInterval;
+
+    public String getMeasureInterval() {
+        return measureInterval;
+    }
+
+    public void setMeasureInterval(String measureInterval) {
+        this.measureInterval = measureInterval;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public void setAssigned(Boolean assigned) {
+        isAssigned = assigned;
+    }
 
     public Boolean getActive() {
         return isActive;
