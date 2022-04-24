@@ -1,8 +1,6 @@
 package com.weather.server.service;
 
-import com.weather.server.domain.dto.station.AddStationDto;
-import com.weather.server.domain.dto.station.StationNameDto;
-import com.weather.server.domain.dto.station.VerifyStationDto;
+import com.weather.server.domain.dto.station.*;
 import com.weather.server.domain.dto.user.UserStationListDto;
 import com.weather.server.domain.entity.Station;
 
@@ -17,9 +15,16 @@ public interface StationService {
     List<Station> getPublicStationList();
 
     StationNameDto getStationName(String stationId);
-    boolean verifyStationId(VerifyStationDto verifyStationDto);
+    boolean verifyStationId(String stationId);
+    boolean verifyStationIdAndStationKey(VerifyStationDto verifyStationDto);
 
     boolean addStationOnMap(AddStationDto addStationDto);
 
     UserStationListDto getUserStationList(String token);
+
+    boolean modeSwitch(StationModeSwitchDto stationModeSwitchDto);
+
+    boolean setMeasureInterval(StationSetMeasureIntervalDto stationSetMeasureIntervalDto);
+
+    StationCurrentModeDto getCurrentMode(String stationId);
 }

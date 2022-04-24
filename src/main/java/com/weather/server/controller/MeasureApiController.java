@@ -20,7 +20,7 @@ public class MeasureApiController {
         this.measureService = measureService;
     }
 
-    @PostMapping(value="/new-measure") //addStation id //TODO add checking if stationId exists in database and its assigned to user maybe?
+    @PostMapping(value="/new-measure") //addStation id // TODO add checking if stationId exists in database and its assigned to user maybe?
     public ResponseEntity<Void> newMeasure(@RequestBody NewMeasureDto newMeasureDto){
         //if api key is valid
         return measureService.saveMeasure(newMeasureDto) ? new ResponseEntity<>(HttpStatus.OK) :
