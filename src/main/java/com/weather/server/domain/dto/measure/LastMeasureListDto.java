@@ -3,7 +3,6 @@ package com.weather.server.domain.dto.measure;
 import com.weather.server.domain.entity.Measure;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class LastMeasureListDto {
     private HashMap<String, Measure> measureList;

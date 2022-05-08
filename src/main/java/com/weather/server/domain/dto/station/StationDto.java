@@ -1,29 +1,26 @@
 package com.weather.server.domain.dto.station;
 
-public class AddStationDto {
-
-    private String token;
+public class StationDto {
     private String stationId;
     private Boolean visible;
-    private String lat;//TODO check if string?
+    private String lat;
     private String lng;
     private String stationName;
+    private Boolean isActive;
+    private String measureInterval;
 
 
-    public AddStationDto() {
+    public StationDto() {
     }
 
-    private AddStationDto(Builder builder) {
-        this.token = builder.token;
+    private StationDto(Builder builder) {
         this.stationId = builder.stationId;
         this.visible = builder.visible;
         this.lat = builder.lat;
         this.lng = builder.lng;
         this.stationName = builder.stationName;
-    }
-
-    public String getToken() {
-        return token;
+        this.isActive = builder.isActive;
+        this.measureInterval = builder.measureInterval;
     }
 
     public String getStationId() {
@@ -46,25 +43,29 @@ public class AddStationDto {
         return stationName;
     }
 
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public String getMeasureInterval() {
+        return measureInterval;
+    }
 
     public static final class Builder {
-        private String token;
         private String stationId;
         private Boolean visible;
-        private String lat;//TODO check if string?
+        private String lat;
         private String lng;
         private String stationName;
+        private Boolean isActive;
+        private Boolean isAssigned;
+        private String measureInterval;
 
-        private Builder() {
+        public Builder() {
         }
 
-        public static Builder anAddStationDto() {
+        public static Builder aStationDto() {
             return new Builder();
-        }
-
-        public Builder token(String token) {
-            this.token = token;
-            return this;
         }
 
         public Builder stationId(String stationId) {
@@ -92,8 +93,23 @@ public class AddStationDto {
             return this;
         }
 
-        public AddStationDto build() {
-            return new AddStationDto(this);
+        public Builder isActive(Boolean isActive) {
+            this.isActive = isActive;
+            return this;
+        }
+
+        public Builder isAssigned(Boolean isAssigned) {
+            this.isAssigned = isAssigned;
+            return this;
+        }
+
+        public Builder measureInterval(String measureInterval) {
+            this.measureInterval = measureInterval;
+            return this;
+        }
+
+        public StationDto build() {
+            return new StationDto(this);
         }
     }
 }

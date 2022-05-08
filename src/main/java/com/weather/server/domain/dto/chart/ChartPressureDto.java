@@ -4,10 +4,12 @@ public class ChartPressureDto {
     private String date;
     private Float pressure;
 
+    public ChartPressureDto() {
+    }
 
-    public ChartPressureDto(String date, Float temp) {
-        this.date = date;
-        this.pressure = temp;
+    private ChartPressureDto(Builder builder) {
+        this.date = builder.date;
+        this.pressure = builder.pressure;
     }
 
     public String getDate() {
@@ -24,6 +26,33 @@ public class ChartPressureDto {
 
     public void setPressure(Float pressure) {
         this.pressure = pressure;
+    }
+
+
+    public static final class Builder {
+        private String date;
+        private Float pressure;
+
+        public Builder() {
+        }
+
+        public static Builder aChartPressureDto() {
+            return new Builder();
+        }
+
+        public Builder date(String date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder pressure(Float pressure) {
+            this.pressure = pressure;
+            return this;
+        }
+
+        public ChartPressureDto build() {
+            return new ChartPressureDto(this);
+        }
     }
 }
 

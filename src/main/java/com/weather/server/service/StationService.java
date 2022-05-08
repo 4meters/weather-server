@@ -1,6 +1,9 @@
 package com.weather.server.service;
 
+import com.weather.server.domain.dto.station.StationChangeNameDto;
+import com.weather.server.domain.dto.station.StationSetVisibilityDto;
 import com.weather.server.domain.dto.station.*;
+import com.weather.server.domain.dto.user.UserMyStationListDetailsDto;
 import com.weather.server.domain.dto.user.UserStationListDto;
 import com.weather.server.domain.entity.Station;
 
@@ -10,9 +13,9 @@ public interface StationService {
 
 
     //test only!
-    List<Station> getStationList(String token);
+    StationListDto getStationList(String token);
 
-    List<Station> getPublicStationList();
+    StationListDto getPublicStationList();
 
     StationNameDto getStationName(String stationId);
     boolean verifyStationId(String stationId);
@@ -27,4 +30,10 @@ public interface StationService {
     boolean setMeasureInterval(StationSetMeasureIntervalDto stationSetMeasureIntervalDto);
 
     StationCurrentModeDto getCurrentMode(String stationId);
+
+    UserMyStationListDetailsDto getUserMyStationListDetails(String token);
+
+    boolean changeStationName(StationChangeNameDto stationChangeNameDto);
+
+    boolean setVisibility(StationSetVisibilityDto stationSetVisibilityDto);
 }

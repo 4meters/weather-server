@@ -20,6 +20,12 @@ public class StationModeSwitchDto {
         return mode;
     }
 
+    private StationModeSwitchDto(Builder builder) {
+        this.stationId = builder.stationId;
+        this.token = builder.token;
+        this.mode = builder.mode;
+    }
+
     public static final class Builder {
         private String stationId;
         private String token;
@@ -48,11 +54,7 @@ public class StationModeSwitchDto {
         }
 
         public StationModeSwitchDto build() {
-            StationModeSwitchDto stationModeSwitchDto = new StationModeSwitchDto();
-            stationModeSwitchDto.token = this.token;
-            stationModeSwitchDto.stationId = this.stationId;
-            stationModeSwitchDto.mode = this.mode;
-            return stationModeSwitchDto;
+            return new StationModeSwitchDto(this);
         }
     }
 }

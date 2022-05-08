@@ -4,10 +4,12 @@ public class ChartHumidityDto {
     private String date;
     private Float humidity;
 
+    public ChartHumidityDto() {
+    }
 
-    public ChartHumidityDto(String date, Float temp) {
-        this.date = date;
-        this.humidity = temp;
+    private ChartHumidityDto(Builder builder) {
+        this.date = builder.date;
+        this.humidity = builder.humidity;
     }
 
     public String getDate() {
@@ -24,6 +26,33 @@ public class ChartHumidityDto {
 
     public void setHumidity(Float humidity) {
         this.humidity = humidity;
+    }
+
+
+    public static final class Builder {
+        private String date;
+        private Float humidity;
+
+        public Builder() {
+        }
+
+        public static Builder aChartHumidityDto() {
+            return new Builder();
+        }
+
+        public Builder date(String date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder humidity(Float humidity) {
+            this.humidity = humidity;
+            return this;
+        }
+
+        public ChartHumidityDto build() {
+            return new ChartHumidityDto(this);
+        }
     }
 }
 

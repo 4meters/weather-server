@@ -7,8 +7,10 @@ public class MeasureByDateDto {
     String dateFrom;
     String dateTo;
 
+    public MeasureByDateDto() {
+    }
 
-    public MeasureByDateDto(String apiKey, String stationId, String dateFrom, String dateTo) {
+    private MeasureByDateDto(String apiKey, String stationId, String dateFrom, String dateTo) {
         this.token = apiKey;
         this.stationId = stationId;
         this.dateFrom = dateFrom;

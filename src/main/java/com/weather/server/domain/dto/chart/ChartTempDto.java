@@ -6,10 +6,12 @@ public class ChartTempDto {
     private String date;
     private Float temp;
 
+    public ChartTempDto() {
+    }
 
-    public ChartTempDto(String date, Float temp) {
-        this.date = date;
-        this.temp = temp;
+    private ChartTempDto(Builder builder) {
+        this.date = builder.date;
+        this.temp = builder.temp;
     }
 
     public String getDate() {
@@ -26,6 +28,33 @@ public class ChartTempDto {
 
     public void setTemp(Float temp) {
         this.temp = temp;
+    }
+
+
+    public static final class Builder {
+        private String date;
+        private Float temp;
+
+        public Builder() {
+        }
+
+        public static Builder aChartTempDto() {
+            return new Builder();
+        }
+
+        public Builder date(String date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder temp(Float temp) {
+            this.temp = temp;
+            return this;
+        }
+
+        public ChartTempDto build() {
+            return new ChartTempDto(this);
+        }
     }
 }
 

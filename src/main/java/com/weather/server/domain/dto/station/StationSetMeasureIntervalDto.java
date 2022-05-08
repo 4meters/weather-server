@@ -66,11 +66,7 @@ public class StationSetMeasureIntervalDto {
         }
 
         public StationSetMeasureIntervalDto build() {
-            StationSetMeasureIntervalDto stationSetMeasureIntervalDto = new StationSetMeasureIntervalDto();
-            stationSetMeasureIntervalDto.measureInterval = this.measureInterval;
-            stationSetMeasureIntervalDto.token = this.token;
-            stationSetMeasureIntervalDto.stationId = this.stationId;
-            return stationSetMeasureIntervalDto;
+            return new StationSetMeasureIntervalDto(this);
         }
     }
 }
