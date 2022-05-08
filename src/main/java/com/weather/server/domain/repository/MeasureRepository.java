@@ -21,7 +21,12 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$limit: 1}",
             "{$addFields: " +
                     "{pressure: {$round: [{$multiply: ['$pressure',{$pow: [{$subtract: [1, {$divide: [{$multiply: [0.0065, ?1]}," +
-                    " {$sum: ['$temp', {$multiply: [0.0065, ?1]}, 273.15]}]}]}, -5.257]}]}, 0]}}}"
+                    " {$sum: ['$temp', {$multiply: [0.0065, ?1]}, 273.15]}]}]}, -5.257]}]}, 0]}}}",
+            "{$addFields: {temp: { $round: ['$temp', 1] }," +
+                    "humidity: { $round: ['$humidity', 0] }," +
+                    "pm25: { $round: ['$pm25', 1] }," +
+                    "pm25Corr: { $round: ['$pm25Corr', 1] }," +
+                    "pm10: { $round: ['$pm10', 1] }}}"
     })
     Measure findLastMeasureByStationId(String stationId, float elevation);
 
