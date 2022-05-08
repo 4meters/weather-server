@@ -1,44 +1,42 @@
 package com.weather.server.domain.dto.chart;
 
-import java.util.Date;
-
-public class ChartTempDto {
+public class ChartPM10Dto {
     private String date;
-    private Float temp;
+    private Float pm10;
 
-    public ChartTempDto() {
+    public ChartPM10Dto() {
     }
 
-    private ChartTempDto(Builder builder) {
+    private ChartPM10Dto(Builder builder) {
         this.date = builder.date;
-        this.temp = builder.temp;
+        this.pm10 = builder.pm10;
     }
 
     public String getDate() {
         return date;
     }
 
-    public Float getTemp() {
-        return temp;
+    public Float getPm10() {
+        return pm10;
     }
 
     public void setDate(String date) {
         this.date = date;
     }
 
-    public void setTemp(Float temp) {
-        this.temp = temp;
+    public void setPm10(Float pm10) {
+        this.pm10 = pm10;
     }
 
 
     public static final class Builder {
         private String date;
-        private Float temp;
+        private Float pm10;
 
         public Builder() {
         }
 
-        public static Builder aChartTempDto() {
+        public static Builder aChartPM10Dto() {
             return new Builder();
         }
 
@@ -47,13 +45,13 @@ public class ChartTempDto {
             return this;
         }
 
-        public Builder temp(Float temp) {
-            this.temp = temp;
+        public Builder pm10(Float pm10) {
+            this.pm10 = pm10;
             return this;
         }
 
-        public ChartTempDto build() {
-            return new ChartTempDto(this);
+        public ChartPM10Dto build() {
+            return new ChartPM10Dto(this);
         }
     }
 }

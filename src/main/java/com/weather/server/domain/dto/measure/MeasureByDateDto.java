@@ -2,14 +2,16 @@ package com.weather.server.domain.dto.measure;
 
 
 public class MeasureByDateDto {
-    String apiKey;
+    String token;
     String stationId;
     String dateFrom;
     String dateTo;
 
+    public MeasureByDateDto() {
+    }
 
-    public MeasureByDateDto(String apiKey, String stationId, String dateFrom, String dateTo) {
-        this.apiKey = apiKey;
+    private MeasureByDateDto(String apiKey, String stationId, String dateFrom, String dateTo) {
+        this.token = apiKey;
         this.stationId = stationId;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -27,8 +29,8 @@ public class MeasureByDateDto {
         return dateTo;
     }
 
-    public String getApiKey() {
-        return apiKey;
+    public String getToken() {
+        return token;
     }
 
 

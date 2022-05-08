@@ -1,15 +1,17 @@
 package com.weather.server.domain.mapper;
 
+import com.weather.server.domain.dto.measure.LastMeasureDto;
 import com.weather.server.domain.dto.measure.NewMeasureDto;
 import com.weather.server.domain.entity.Measure;
 import com.weather.server.domain.model.ISODate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LastMeasureDtoMapper {
-    public NewMeasureDto mapToDto(Measure measure){
+    public LastMeasureDto mapToDto(Measure measure){
 
 
-        NewMeasureDto newMeasureDto = new NewMeasureDto.Builder()
-                .apiKey("")
+        LastMeasureDto lastMeasureDto = new LastMeasureDto.Builder()
                 .stationId(measure.stationId)
                 .date(ISODate.toString(measure.date))
                 .temp(measure.temp.toString())
@@ -20,8 +22,6 @@ public class LastMeasureDtoMapper {
                 .pressure(measure.pressure.toString()).build();
 
 
-        //"", measure.stationId, ISODate.toString(measure.date),measure.temp,measure.humidity,measure.pressure,measure.pm25,
-        //        measure.pm10,measure.pm25Corr);
-        return newMeasureDto;
+        return lastMeasureDto;
     }
 }

@@ -1,10 +1,9 @@
 package com.weather.server.controller;
 
-import com.weather.server.domain.dto.chart.ChartTempListDto;
+import com.weather.server.domain.dto.chart.ChartListDto;
 import com.weather.server.domain.dto.measure.*;
 import com.weather.server.service.MeasureService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +20,9 @@ public class MeasureApiController {
         this.measureService = measureService;
     }
 
-    @PostMapping(value="/new-measure") //addStation id
+    @PostMapping(value="/new-measure")
     public ResponseEntity<Void> newMeasure(@RequestBody NewMeasureDto newMeasureDto){
-        //if api key is valid
+        //if station exists in db
         return measureService.saveMeasure(newMeasureDto) ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
@@ -31,17 +30,21 @@ public class MeasureApiController {
 
     @PostMapping(value="/new-measure-package") //addStation id
     public ResponseEntity<Void> newMeasure(@RequestBody NewMeasurePackageDto measureList){
-        //if api key is valid
         return measureService.saveMeasurePackage(measureList.getMeasureList()) ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value="/last-measure") //add stationID
-    public ResponseEntity<LastMeasureDto> getLast(@RequestParam String stationId){
+    @GetMapping(value="/last-measure")
+    public ResponseEntity<LastMeasureDto> getLast(@RequestParam(name="stationId") String stationId){
         return new ResponseEntity<>(measureService.getLastMeasure(stationId), HttpStatus.OK);
     }
 
-    @GetMapping(value="/measure-by-date") //TODO added, test later
+    @GetMapping(value="/last-measure-all") //public stations
+    public ResponseEntity<LastMeasureListDto> getLastAll(){
+        return new ResponseEntity<>(measureService.getLastMeasureAllPublic(), HttpStatus.OK);
+    }
+
+    @GetMapping(value="/measure-by-date")//TODO remove before release
     public ResponseEntity<?> getByDate(@RequestBody MeasureByDateDto measureByDateDto){
         MeasureListDto measureListDto = measureService.getMeasureListByDate(measureByDateDto);
         if(measureListDto!=null){
@@ -53,9 +56,9 @@ public class MeasureApiController {
 
     }
 
-    @PostMapping(value="/measure-by-date-chart") //TODO added, test later
-    public ResponseEntity<?> getByDateChart(@RequestBody MeasureByDateDto measureByDateDto){
-        ChartTempListDto chartTempListDto = measureService.getMeasuresForChart(measureByDateDto);
+    @PostMapping(value="/measure-by-date-chart")
+    public ResponseEntity<?> getByDateChart(@RequestBody MeasureByDateChartDto measureByDateChartDto){
+        ChartListDto chartTempListDto = measureService.getMeasuresForChart(measureByDateChartDto);
         if(chartTempListDto!=null){
             return new ResponseEntity<>(chartTempListDto, HttpStatus.OK);
         }
@@ -66,7 +69,7 @@ public class MeasureApiController {
     }
 
     //TODO -TEST ONLY! REMOVE BEFORE RELEASE
-    @GetMapping(value="/dump-all-db") //add station ID
+    @GetMapping(value="/dump-all-db")
     public ResponseEntity<?> getByDate(){
         MeasureListDto measureListDto = measureService.getMeasureDatabase();
         if(measureListDto!=null){

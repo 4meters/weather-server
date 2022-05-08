@@ -5,17 +5,14 @@ import org.bson.types.Decimal128;
 import org.springframework.data.annotation.Id;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
-public class Measure {
+public class MeasureAggregation {
 
     @Id
-    public String id;
-
+    public String _id;
 
     public String stationId;
-    public Date date;
+    public String date;
     public Decimal128 temp;
     public Decimal128 humidity;
     public Decimal128 pressure;
@@ -24,11 +21,11 @@ public class Measure {
     public Decimal128 pm10;
 
 
-    public Measure() {
+    public MeasureAggregation() {
     }
 
-    public Measure(String stationId, Date date, Decimal128 temp, Decimal128 humidity, Decimal128 pressure, Decimal128 pm25,
-                   Decimal128 pm10, Decimal128 pm25Corr) {
+    public MeasureAggregation(String stationId, String date, Decimal128 temp, Decimal128 humidity, Decimal128 pressure, Decimal128 pm25,
+                              Decimal128 pm10, Decimal128 pm25Corr) {
         this.stationId = stationId;
         this.date = date;
         this.temp = temp;
@@ -40,15 +37,15 @@ public class Measure {
     }
 
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public void setStationId(String stationId) {
         this.stationId = stationId;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -84,7 +81,7 @@ public class Measure {
         String isoDate = sdfISO.format(date);
 
         return "Measure{" +
-                "id='" + id + '\'' +
+                "id='" + _id + '\'' +
                 ", date='" + date + '\'' +
                 ", temp='" + temp + '\'' +
                 ", pressure='" + pressure + '\'' +
