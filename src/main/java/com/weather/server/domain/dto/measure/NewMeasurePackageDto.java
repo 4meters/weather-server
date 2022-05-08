@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class NewMeasurePackageDto {
     private ArrayList<NewMeasureDto> measureList;
 
-    public NewMeasurePackageDto(ArrayList<NewMeasureDto> measureList) {
-        this.measureList = measureList;
+    private NewMeasurePackageDto(Builder builder) {
+        this.measureList = builder.measureList;
     }
 
     public NewMeasurePackageDto() {
@@ -27,5 +27,25 @@ public class NewMeasurePackageDto {
         return "NewMeasurePackageDto{" +
                 "measureList=" + measureList +
                 '}';
+    }
+
+    public static final class Builder {
+        private ArrayList<NewMeasureDto> measureList;
+
+        private Builder() {
+        }
+
+        public static Builder aNewMeasurePackageDto() {
+            return new Builder();
+        }
+
+        public Builder measureList(ArrayList<NewMeasureDto> measureList) {
+            this.measureList = measureList;
+            return this;
+        }
+
+        public NewMeasurePackageDto build() {
+            return new NewMeasurePackageDto(this);
+        }
     }
 }

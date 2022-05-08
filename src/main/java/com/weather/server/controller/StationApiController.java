@@ -1,5 +1,7 @@
 package com.weather.server.controller;
 
+import com.weather.server.domain.dto.station.StationChangeNameDto;
+import com.weather.server.domain.dto.station.StationSetVisibilityDto;
 import com.weather.server.domain.dto.station.*;
 import com.weather.server.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,8 @@ public class StationApiController {
     }*/
 
     @GetMapping(value="/get-public-stationlist")//TODO seperate DTO for Station - can't use direct db entine because of station key
-    public ResponseEntity<?> getPublicStationList(){
-        return new ResponseEntity<>(new StationListDto.Builder().stationList(stationService.getPublicStationList()).build()
+    public ResponseEntity<StationListDto> getPublicStationList(){
+        return new ResponseEntity<>(stationService.getPublicStationList()
                 , HttpStatus.OK);
 
     }
@@ -75,6 +77,18 @@ public class StationApiController {
         return stationCurrentModeDto!=null ? new ResponseEntity<>(stationCurrentModeDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+    }
+
+    @PostMapping(value = "/change-station-name")
+    public ResponseEntity<?> changeStationName(@RequestBody StationChangeNameDto stationChangeNameDto) {
+        return stationService.changeStationName(stationChangeNameDto) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(value = "/set-visibility")
+    public ResponseEntity<?> setVisibility(@RequestBody StationSetVisibilityDto stationSetVisibilityDto){
+        return stationService.setVisibility(stationSetVisibilityDto) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /*@PostMapping(value="/add-station")

@@ -8,7 +8,7 @@ public class StationCurrentModeDto {
     public StationCurrentModeDto() {
     }
 
-    public StationCurrentModeDto(Builder builder) {
+    private StationCurrentModeDto(Builder builder) {
         this.stationId = builder.stationId;
         this.mode = builder.mode;
         this.measureInterval = builder.measureInterval;
@@ -54,11 +54,7 @@ public class StationCurrentModeDto {
         }
 
         public StationCurrentModeDto build() {
-            StationCurrentModeDto stationCurrentModeDto = new StationCurrentModeDto();
-            stationCurrentModeDto.stationId = this.stationId;
-            stationCurrentModeDto.measureInterval = this.measureInterval;
-            stationCurrentModeDto.mode = this.mode;
-            return stationCurrentModeDto;
+            return new StationCurrentModeDto(this);
         }
     }
 }

@@ -1,19 +1,22 @@
 package com.weather.server.service.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weather.server.domain.dto.chart.ChartListDto;
 import com.weather.server.domain.dto.measure.*;
 import com.weather.server.domain.entity.*;
 import com.weather.server.domain.mapper.ChartDtoMapper;
+import com.weather.server.domain.mapper.LastMeasureDtoMapper;
 import com.weather.server.domain.mapper.NewMeasureMapper;
-import com.weather.server.domain.model.ISODate;
 import com.weather.server.domain.repository.MeasureRepository;
 import com.weather.server.domain.repository.StationRepository;
 import com.weather.server.domain.repository.UserRepository;
 import com.weather.server.domain.repository.UserStationListRepository;
 import com.weather.server.service.MeasureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.client.RestTemplate;
 
 
 import java.time.Instant;
@@ -26,13 +29,21 @@ public class MeasureServiceImpl implements MeasureService {
     private final UserRepository userRepository;
     private final UserStationListRepository userStationListRepository;
     private final StationRepository stationRepository;
+    private final ChartDtoMapper chartDtoMapper;
+    private final LastMeasureDtoMapper lastMeasureDtoMapper;
+    private final NewMeasureMapper newMeasureMapper;
+
+
 
     @Autowired
-    public MeasureServiceImpl(MeasureRepository measureRepository, UserRepository userRepository, UserStationListRepository userStationListRepository, StationRepository stationRepository) {
+    public MeasureServiceImpl(MeasureRepository measureRepository, UserRepository userRepository, UserStationListRepository userStationListRepository, StationRepository stationRepository, ChartDtoMapper chartDtoMapper, LastMeasureDtoMapper lastMeasureDtoMapper, NewMeasureMapper newMeasureMapper) {
         this.measureRepository=measureRepository;
         this.userRepository = userRepository;
         this.userStationListRepository = userStationListRepository;
         this.stationRepository = stationRepository;
+        this.chartDtoMapper = chartDtoMapper;
+        this.lastMeasureDtoMapper = lastMeasureDtoMapper;
+        this.newMeasureMapper = newMeasureMapper;
     }
     /*public void test(){
         ConnectionString connectionString = new ConnectionString("mongodb+srv://admin:zaq1%40WSX@cluster0.fyl2u.mongodb.net/Cluster0?retryWrites=true&w=majority");
@@ -43,12 +54,11 @@ public class MeasureServiceImpl implements MeasureService {
         MongoDatabase database = mongoClient.getDatabase("Cluster0");
     }*/
 
-    //TODO verifyapikey
     @Override
     public boolean saveMeasure(NewMeasureDto newMeasureDto) {
         if(verifyStationId(newMeasureDto.getStationId())) {
             //System.out.println("Saving measure");
-            Measure measure = new NewMeasureMapper().mapToEntity(newMeasureDto);
+            Measure measure = newMeasureMapper.mapToEntity(newMeasureDto);
             //System.out.println(measure);
             measureRepository.save(measure);
             return true;
@@ -66,33 +76,17 @@ public class MeasureServiceImpl implements MeasureService {
         if(station == null){
             return false;
         }
-        else if(station.getStationId().equals(stationId)) {
-            return true;
-
-        }
-        else{
-            return false;
-        }
+        else return station.getStationId().equals(stationId);
     }
 
     @Override
     public LastMeasureDto getLastMeasure(String stationId) {
-        Measure measure =measureRepository.findFirstByStationIdOrderByDateDesc(stationId);
-        //Measure measure=measureRepository.findByTemp("24.37");
-        System.out.println(measure);
-        LastMeasureDto lastMeasureDto = new LastMeasureDto.Builder()
-                .stationId(measure.stationId)
-                .date(ISODate.toString(measure.date))
-                .temp(measure.temp.toString())
-                .humidity(measure.humidity.toString())
-                .pm10(measure.pm10.toString())
-                .pm25(measure.pm25.toString())
-                .pm25Corr(measure.pm25Corr.toString())
-                .pressure(measure.pressure.toString())
-                .build();
-
-                //new NewMeasureDto("", "", ISODate.toString(measure.date), measure.temp, measure.humidity, measure.pressure, measure.pm25, measure.pm10, measure.pm25Corr);
-        return lastMeasureDto;
+        //System.out.println(stationId);
+        Station station = stationRepository.findByStationId(stationId);
+        float elevation = getElevation(station.getLat(), station.getLng());
+        Measure measure =measureRepository.findLastMeasureByStationId(stationId, elevation);
+        //System.out.println(measure);
+        return lastMeasureDtoMapper.mapToDto(measure);
     }
 
     @Override
@@ -131,18 +125,43 @@ public class MeasureServiceImpl implements MeasureService {
     }
 
     @Override
+    public float getElevation(String lat, String lng){
+        //get elevation from remote
+        float elevation = (float)200.0; //default set in case remote server fails
+        final String uri = "https://api.airmap.com/elevation/v1/ele/?points="+lat+","+lng;
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+            JsonNode root = mapper.readTree(Objects.requireNonNull(response.getBody()));
+            JsonNode results = root.path("data");
+
+            if (results.isArray()) {
+                Iterator<JsonNode> itr = results.iterator();
+                JsonNode item=itr.next();
+                String elevationStr = item.toString();
+                elevation=Float.parseFloat(elevationStr);
+                //System.out.println(elevation);
+                return elevation;
+            }
+        }
+        catch (Exception e){
+            System.out.println("Error parsing JSON");//incase remote server fails use average elevation
+        }
+
+        return elevation;
+    }
+
+    @Override
     public ChartListDto getMeasuresForChart(MeasureByDateChartDto measureByDateChartDto) {//add switch for multiple type of charts
-        //Date dateFrom = Date.from( Instant.parse( "2013-07-06T10:39:40Z" ));
-        //Date dateTo = Date.from( Instant.parse( "2013-07-08T10:39:40Z" ));
-        //drutowanie start
-        //String userId=verifyApiKey(measureByDateChartDto.getApiKey());
-        //if(userId!=null) {
-        //drutowanie end
+
         Station station = stationRepository.findByStationId(measureByDateChartDto.getStationId());
         if(!station.getVisible()){ //if private station verify token
-            User user = userRepository.findByToken(measureByDateChartDto.getToken());
-            if(user==null){
-                return null;//403 http code?
+            if(measureByDateChartDto.getToken()!=null) {
+                User user = userRepository.findByToken(measureByDateChartDto.getToken());
+                if (user == null) {
+                    return null;//403 http code?
+                }
             }
         }
         if(verifyStationId(measureByDateChartDto.getStationId())) {
@@ -175,7 +194,8 @@ public class MeasureServiceImpl implements MeasureService {
                                     break;
                                 }
                                 case "pressure":{
-                                    measureList=measureRepository.findAvgPressureByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    Float elevation = getElevation(station.getLat(), station.getLng());
+                                    measureList=measureRepository.findAvgPressureByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
@@ -206,7 +226,8 @@ public class MeasureServiceImpl implements MeasureService {
                                     break;
                                 }
                                 case "pressure":{
-                                    measureList=measureRepository.findMinPressureByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    Float elevation = getElevation(station.getLat(), station.getLng());
+                                    measureList=measureRepository.findMinPressureByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
@@ -235,7 +256,8 @@ public class MeasureServiceImpl implements MeasureService {
                                     break;
                                 }
                                 case "pressure":{
-                                    measureList=measureRepository.findMaxPressureByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    Float elevation = getElevation(station.getLat(), station.getLng());
+                                    measureList=measureRepository.findMaxPressureByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
@@ -255,7 +277,7 @@ public class MeasureServiceImpl implements MeasureService {
                         }
                     }
                     //mapper here
-                    return new ChartDtoMapper().mapToDto(measureByDateChartDto.getChartValue(),measureList);
+                    return chartDtoMapper.mapToDto(measureByDateChartDto.getChartValue(),measureList);
 
 
                     //return new ChartListDto(chartTempList);
@@ -276,7 +298,8 @@ public class MeasureServiceImpl implements MeasureService {
                                     break;
                                 }
                                 case "pressure":{
-                                    measureList=measureRepository.findAvgPressureByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    Float elevation = getElevation(station.getLat(), station.getLng());
+                                    measureList=measureRepository.findAvgPressureByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
@@ -307,7 +330,8 @@ public class MeasureServiceImpl implements MeasureService {
                                     break;
                                 }
                                 case "pressure":{
-                                    measureList=measureRepository.findMinPressureByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    Float elevation = getElevation(station.getLat(), station.getLng());
+                                    measureList=measureRepository.findMinPressureByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
@@ -336,7 +360,8 @@ public class MeasureServiceImpl implements MeasureService {
                                     break;
                                 }
                                 case "pressure":{
-                                    measureList=measureRepository.findMaxPressureByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    Float elevation = getElevation(station.getLat(), station.getLng());
+                                    measureList=measureRepository.findMaxPressureByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
@@ -355,8 +380,7 @@ public class MeasureServiceImpl implements MeasureService {
                             break;
                         }
                     }
-                    //mapper here
-                    return new ChartDtoMapper().mapToDto(measureByDateChartDto.getChartValue(),measureList);
+                    return chartDtoMapper.mapToDto(measureByDateChartDto.getChartValue(),measureList);
                 }
             }
 
@@ -370,26 +394,31 @@ public class MeasureServiceImpl implements MeasureService {
     }
 
 
-    //TODO verify apikey!
     @Override
     public boolean saveMeasurePackage(List<NewMeasureDto> newMeasureDtoList) {
-        /*for(NewMeasureDto newMeasureDto : measureList){
-            //System.out.println(newMeasureDto);
-            boolean result = saveMeasure(newMeasureDto);
-            if(result==false){
-                return false;
+
+        ArrayList<String> stationIdList = new ArrayList<>();
+
+        //TODO check if works
+        //verify stationId for package measures with caching stationIds in list - reduce db queries
+        for(NewMeasureDto newMeasureDto : newMeasureDtoList){
+            if(!stationIdList.contains(newMeasureDto.getStationId())){
+                Station station = stationRepository.findByStationId(newMeasureDto.getStationId());
+                if(station!=null){
+                    stationIdList.add(station.getStationId());
+                }
+                else {
+                    return false;
+                }
             }
-        }*/
+        }
 
         List<Measure> measureList=new ArrayList<>();
         for(NewMeasureDto newMeasureDto : newMeasureDtoList){
-            Measure measure = new NewMeasureMapper().mapToEntity(newMeasureDto);
+            Measure measure = newMeasureMapper.mapToEntity(newMeasureDto);
             measureList.add(measure);
         }
         measureRepository.insert(measureList);
-        //return true;
-        //System.out.println(measureList);
-        //System.out.println(measureList.get(0));
         return true;
     }
 
@@ -397,8 +426,6 @@ public class MeasureServiceImpl implements MeasureService {
     public MeasureListDto getMeasureDatabase() {
         List<Measure> measureList = measureRepository.findAll();
 
-        //System.out.println(measureList);
-        //return measureList;
         return new MeasureListDto.Builder()
                 .measureList(measureList)
                 .build();
@@ -416,8 +443,9 @@ public class MeasureServiceImpl implements MeasureService {
         HashMap<String, Measure> measureList = new HashMap<>();
         Measure measure;
         for (Station station : stationList){
-            measure =measureRepository.findFirstByStationIdOrderByDateDesc(station.getStationId());
 
+            float elevation = getElevation(station.getLat(), station.getLng());
+            measure = measureRepository.findLastMeasureByStationId(station.getStationId(), elevation);
             if(measure!=null){
                 measureList.put(station.getStationId(), measure);
             }
@@ -453,6 +481,15 @@ public class MeasureServiceImpl implements MeasureService {
         }
 
     }
+
+    /*@Override
+    public LastMeasureListDto getLastMeasurePublicAndPrivate(String token) {
+        LastMeasureListDto lastMeasureListPublicDto = getLastMeasureAllPublic();
+        LastMeasureListDto lastMeasureListPrivateDto = getLastMeasureAllPrivate(token);
+
+        ArrayList<Measure> lastMeasureList
+
+    }*/
 
 
 }

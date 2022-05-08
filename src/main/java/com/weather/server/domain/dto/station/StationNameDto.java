@@ -1,11 +1,10 @@
 package com.weather.server.domain.dto.station;
 
-import com.weather.server.domain.entity.Station;
-
-import java.util.List;
-
 public class StationNameDto {
     private String stationName;
+
+    public StationNameDto() {
+    }
 
     private StationNameDto(Builder builder) {
         this.stationName = builder.stationName;

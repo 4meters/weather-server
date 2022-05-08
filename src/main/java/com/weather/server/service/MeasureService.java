@@ -20,4 +20,6 @@ public interface MeasureService {
     LastMeasureListDto getLastMeasureAllPublic();
     LastMeasureListDto getLastMeasureAllPrivate(String token);
 
+    float getElevation(String lat, String lng);
+
 }

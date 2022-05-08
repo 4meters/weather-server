@@ -1,13 +1,21 @@
 package com.weather.server.service.impl;
 
+import com.weather.server.domain.dto.station.StationChangeNameDto;
+import com.weather.server.domain.dto.station.StationSetVisibilityDto;
 import com.weather.server.domain.dto.station.*;
+import com.weather.server.domain.dto.user.UserMyStationListDetailsDto;
 import com.weather.server.domain.dto.user.UserStationListDto;
+import com.weather.server.domain.entity.Measure;
 import com.weather.server.domain.entity.Station;
 import com.weather.server.domain.entity.UserStationList;
 import com.weather.server.domain.entity.User;
+import com.weather.server.domain.mapper.StationDtoMapper;
+import com.weather.server.domain.mapper.StationListDtoMapper;
+import com.weather.server.domain.repository.MeasureRepository;
 import com.weather.server.domain.repository.UserStationListRepository;
 import com.weather.server.domain.repository.StationRepository;
 import com.weather.server.domain.repository.UserRepository;
+import com.weather.server.service.MeasureService;
 import com.weather.server.service.StationService;
 import com.weather.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -22,19 +31,26 @@ public class StationServiceImpl implements StationService {
     private final StationRepository stationRepository;
     private final UserStationListRepository userStationListRepository;
     private final UserRepository userRepository;
+    private final MeasureRepository measureRepository;
     private final UserService userService;
+    private final MeasureService measureService;
+    private final StationListDtoMapper stationListDtoMapper;
 
 
     @Autowired
-    public StationServiceImpl(StationRepository stationRepository, UserStationListRepository stationListRepository, UserRepository userRepository, UserService userService) {
+    public StationServiceImpl(StationRepository stationRepository, UserStationListRepository stationListRepository,
+                              UserRepository userRepository, MeasureRepository measureRepository, UserService userService, MeasureService measureService, StationListDtoMapper stationListDtoMapper) {
         this.stationRepository = stationRepository;
         this.userStationListRepository = stationListRepository;
         this.userRepository = userRepository;
+        this.measureRepository = measureRepository;
         this.userService = userService;
+        this.measureService = measureService;
+        this.stationListDtoMapper = stationListDtoMapper;
     }
 
     @Override
-    public List<Station> getStationList(String token) {//TODO sth
+    public StationListDto getStationList(String token) {//TODO sth alternative version with all stations public and private in one
         List<Station> stationList;
         //if(token==null || token.equals("")){
          //   stationList =  stationRepository.findAllByVisibility(true); //visible
@@ -42,19 +58,16 @@ public class StationServiceImpl implements StationService {
         //else{
             stationList = stationRepository.findAll();
         //}
-        return stationList;
+        return stationListDtoMapper.mapToDto(stationList);
     }
 
     @Override
-    public List<Station> getPublicStationList() {//TODO sth
+    public StationListDto getPublicStationList() {
         List<Station> stationList;
-        //if(token==null || token.equals("")){
-        //   stationList =  stationRepository.findAllByVisibility(true); //visible
-        //}
-        //else{
+
         stationList = stationRepository.findAllByVisible(true);
-        //}
-        return stationList;
+
+        return stationListDtoMapper.mapToDto(stationList);
     }
 
     @Override
@@ -75,13 +88,7 @@ public class StationServiceImpl implements StationService {
         if(station == null){
             return false;
         }
-        else if(station.getStationId().equals(stationId)) {
-            return true;
-
-        }
-        else{
-            return false;
-        }
+        else return station.getStationId().equals(stationId);
     }
 
 
@@ -94,39 +101,28 @@ public class StationServiceImpl implements StationService {
         Station station=stationRepository.findByStationId(stationId);
         User user = userRepository.findByToken(token);
 
-        //System.out.println(stationRepository.findAllByVisible(true));
-        //System.out.println("TEST2");
-        //System.out.println(station);
-        //System.out.println(stationId);
-        //TODO refactor
         if(station == null){
-            //System.out.println("if1st");
             return false;
         }
         else if(station.getStationId().equals(stationId)&&station.getStationKey().equals(stationKey)) {
-            if(user==null){
-                return false;
-            }
-            else {
-                //System.out.println("else ifst");
-                return true;
-            }
-
+            return user != null;
         }
         else{
-            //System.out.println("elsest");
             return false;
         }
     }
 
     @Override
-    public boolean addStationOnMap(AddStationDto addStationDto) { //TODO on remove/remove from user list and map set active to false, assigned to false
+    public boolean addStationOnMap(AddStationDto addStationDto) { //TODO on remove / remove from user list and map set active to false, assigned to false
         Station station = stationRepository.findByStationId(addStationDto.getStationId());
         User user = userRepository.findByToken(addStationDto.getToken());
         //TODO add check if station is already added on map and assigned to user (lat lng not null and stationId present in user stationIdlist)
         if(user!=null && station!=null){
             List<String> myStationList = new ArrayList<>();
             UserStationList userStationList = userStationListRepository.findByUserId(user.getUserId());
+            if(station.getAssigned()==true){
+                return false;
+            }
             if(userStationList==null){
                 userStationList = new UserStationList();
                 userStationList.setUserId(user.getUserId());
@@ -143,6 +139,7 @@ public class StationServiceImpl implements StationService {
             station.setLat(addStationDto.getLat());
             station.setLng(addStationDto.getLng());
             station.setVisible(addStationDto.getVisible());
+            station.setAssigned(true);
             stationRepository.save(station);
             userStationListRepository.save(userStationList);
             //userRepository.save(user);
@@ -157,31 +154,39 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public UserStationListDto getUserStationList(String token) {
-        List<Station> myStationListForDto=new ArrayList<>();
-        List<Station> bookmarkStationListForDto=new ArrayList<>();
+        List<StationDto> myStationListForDto=new ArrayList<>();
+        List<StationDto> bookmarkStationListForDto=new ArrayList<>();
+        List<Station> stationList=new ArrayList<>();
+        StationDtoMapper stationDtoMapper = new StationDtoMapper();
 
         if(userService.checkToken(token)){
             User user = userRepository.findByToken(token);
             UserStationList userStationList = userStationListRepository.findByUserId(user.getUserId());
-            System.out.println("CHECK1");
             if(userStationList!=null){
                 List<String> myStationList = userStationList.getMyStationList();
                 List<String> bookmarkStationList = userStationList.getBookmarkStationList();
-                System.out.println("CHECK2");
 
                 if(myStationList!=null && !myStationList.isEmpty()){
-                    myStationListForDto = stationRepository.findAll();
-                    for(String stationId : myStationList){
-                        myStationListForDto.removeIf(station -> !station.getStationId().equals(stationId));
+                    stationList = stationRepository.findAll();
+                    for(Station station : stationList){
+                        for(String stationId : myStationList){
+                            if(station.getStationId().equals(stationId)){
+                                myStationListForDto.add(stationDtoMapper.mapToDto(station));
+                            }
+                        }
                     }
-                }            System.out.println("CHECK3");
+                }
 
                 if(bookmarkStationList!=null && !bookmarkStationList.isEmpty()){
-                    bookmarkStationListForDto = stationRepository.findAll();
-                    for(String stationId : bookmarkStationList){
-                        bookmarkStationListForDto.removeIf(station -> !station.getStationId().equals(stationId));
+                    stationList = stationRepository.findAll();
+                    for(Station station : stationList){
+                        for(String stationId : bookmarkStationList){
+                            if(station.getStationId().equals(stationId)){
+                                bookmarkStationListForDto.add(stationDtoMapper.mapToDto(station));
+                            }
+                        }
                     }
-                }            System.out.println("CHECK4");
+                }
 
                 return new UserStationListDto.Builder()
                         .myStationList(myStationListForDto)
@@ -190,7 +195,6 @@ public class StationServiceImpl implements StationService {
             }
 
         }
-        System.out.println("CHECK5");
 
         return null;
     }
@@ -229,16 +233,15 @@ public class StationServiceImpl implements StationService {
         //TODO verify if station is in user list
         if(userService.checkToken(stationSetMeasureIntervalDto.getToken())) {
             if (verifyStationId(stationSetMeasureIntervalDto.getStationId())) {
+
                 Station station = stationRepository.findByStationId(stationSetMeasureIntervalDto.getStationId());
+
                 if(availableMeasureIntervals.contains(stationSetMeasureIntervalDto.getMeasureInterval())){
-                    //System.out.println("OK");
                     station.setMeasureInterval(stationSetMeasureIntervalDto.getMeasureInterval());
                     stationRepository.save(station);
                     return true;
-                    /*station.setMeasureInterval("3min");
-                    stationRepository.save(station);
-                    break;*/
                 }
+
             } else {
                 return false;
             }
@@ -263,6 +266,93 @@ public class StationServiceImpl implements StationService {
         else {
             return null;
         }
+    }
+
+    @Override
+    public UserMyStationListDetailsDto getUserMyStationListDetails(String token) {
+        if(userService.checkToken(token)) {
+            List<Station> myStationListForDto = new ArrayList<>();
+            HashMap<String, Measure> measureList = new HashMap<>();
+
+            User user = userRepository.findByToken(token);
+            UserStationList userStationList = userStationListRepository.findByUserId(user.getUserId());
+
+            if (userStationList != null) {
+                List<String> myStationList = userStationList.getMyStationList();
+
+
+                if (myStationList != null && !myStationList.isEmpty()) {
+                    myStationListForDto = stationRepository.findAll();
+                    //System.out.println(myStationListForDto);
+                    for (String stationId : myStationList) {
+                        System.out.println(stationId);
+                        myStationListForDto.removeIf(station -> !station.getStationId().equals(stationId));
+                    }
+                }
+
+                assert myStationList != null;
+                for (String stationId : myStationList) {
+                    Station station = stationRepository.findByStationId(stationId);
+                    float elevation = measureService.getElevation(station.getLat(),station.getLng());//pressure elev fix
+                    Measure measure = measureRepository.findLastMeasureByStationId(stationId, elevation);
+                    if (measure != null) {
+                        measureList.put(stationId, measure);
+                    }
+                }
+                return new UserMyStationListDetailsDto.Builder()
+                        .stationList(myStationListForDto)
+                        .measureList(measureList)
+                        .build();
+                //get measures
+
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean changeStationName(StationChangeNameDto stationChangeNameDto) {
+        if(userService.checkToken(stationChangeNameDto.getToken())){
+            Station station = stationRepository.findByStationId(stationChangeNameDto.getStationId());
+            if(station!=null){
+                User user = userRepository.findByToken(stationChangeNameDto.getToken());
+                UserStationList userStationList = userStationListRepository.findByUserId(user.getUserId());
+                if(userStationList!=null){
+                    List<String> myStationList = userStationList.getMyStationList();
+                    if(myStationList!=null){
+                        if(myStationList.contains(stationChangeNameDto.getStationId())){
+                            station.setStationName(stationChangeNameDto.getNewStationName());
+                            stationRepository.save(station);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
+
+    @Override
+    public boolean setVisibility(StationSetVisibilityDto stationSetVisibilityDto) {
+        if(userService.checkToken(stationSetVisibilityDto.getToken())){
+            Station station = stationRepository.findByStationId(stationSetVisibilityDto.getStationId());
+            if(station!=null){
+                User user = userRepository.findByToken(stationSetVisibilityDto.getToken());
+                UserStationList userStationList = userStationListRepository.findByUserId(user.getUserId());
+                if(userStationList!=null){
+                    List<String> myStationList = userStationList.getMyStationList();
+                    if(myStationList!=null){
+                        if(myStationList.contains(stationSetVisibilityDto.getStationId())){
+                            station.setVisible(stationSetVisibilityDto.getVisibility().equals("true")); //string to bool
+                            stationRepository.save(station);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 

@@ -14,10 +14,10 @@ public class VerifyStationDto {
 
     private String token;
 
-    public VerifyStationDto(String stationId, String stationKey, String token) {
-        this.stationId = stationId;
-        this.stationKey = stationKey;
-        this.token = token;
+    private VerifyStationDto(Builder builder) {
+        this.stationId = builder.stationId;
+        this.stationKey = builder.stationKey;
+        this.token = builder.token;
     }
 
     public VerifyStationDto() {
@@ -37,5 +37,38 @@ public class VerifyStationDto {
 
     public void setStationId(String stationId) {
         this.stationId = stationId;
+    }
+
+
+    public static final class Builder {
+        private String stationId;
+        private String stationKey;
+        private String token;
+
+        private Builder() {
+        }
+
+        public static Builder aVerifyStationDto() {
+            return new Builder();
+        }
+
+        public Builder stationId(String stationId) {
+            this.stationId = stationId;
+            return this;
+        }
+
+        public Builder stationKey(String stationKey) {
+            this.stationKey = stationKey;
+            return this;
+        }
+
+        public Builder token(String token) {
+            this.token = token;
+            return this;
+        }
+
+        public VerifyStationDto build() {
+            return new VerifyStationDto(this);
+        }
     }
 }

@@ -1,22 +1,28 @@
 package com.weather.server.domain.dto.user;
 
+import com.weather.server.domain.dto.station.StationDto;
 import com.weather.server.domain.dto.station.StationListDto;
 import com.weather.server.domain.entity.Station;
 
 import java.util.List;
 
 public class UserStationListDto {
-    private List<Station> myStationList;
-    private List<Station> bookmarkStationList;
+    private List<StationDto> myStationList;
+    private List<StationDto> bookmarkStationList;
 
     public UserStationListDto() {
     }
 
-    public List<Station> getMyStationList() {
+    public UserStationListDto(Builder builder) {
+        this.myStationList = builder.myStationList;
+        this.bookmarkStationList = builder.bookmarkStationList;
+    }
+
+    public List<StationDto> getMyStationList() {
         return myStationList;
     }
 
-    public List<Station> getBookmarkStationList() {
+    public List<StationDto> getBookmarkStationList() {
         return bookmarkStationList;
     }
 
@@ -30,8 +36,8 @@ public class UserStationListDto {
 
 
     public static final class Builder {
-        private List<Station> myStationList;
-        private List<Station> bookmarkStationList;
+        private List<StationDto> myStationList;
+        private List<StationDto> bookmarkStationList;
 
         public Builder() {
         }
@@ -40,21 +46,18 @@ public class UserStationListDto {
             return new Builder();
         }
 
-        public Builder myStationList(List<Station> myStationList) {
+        public Builder myStationList(List<StationDto> myStationList) {
             this.myStationList = myStationList;
             return this;
         }
 
-        public Builder bookmarkStationList(List<Station> bookmarkStationList) {
+        public Builder bookmarkStationList(List<StationDto> bookmarkStationList) {
             this.bookmarkStationList = bookmarkStationList;
             return this;
         }
 
         public UserStationListDto build() {
-            UserStationListDto userStationListDto = new UserStationListDto();
-            userStationListDto.bookmarkStationList = this.bookmarkStationList;
-            userStationListDto.myStationList = this.myStationList;
-            return userStationListDto;
+            return new UserStationListDto(this);
         }
     }
 }
