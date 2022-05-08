@@ -2,17 +2,58 @@ package com.weather.server.domain.entity;
 
 import org.springframework.data.annotation.Id;
 
-import java.util.List;
-
 public class Station { //? seperate one collection for existing, produced stations?
     @Id
     String id;
 
     String stationId;
+    String stationKey;
     Boolean visible;
-    String geolocationCoordinateN;
-    String geolocationCoordinateE;
+    String lat;
+    String lng;
+    String stationName;
+    Boolean isActive;//TODO
+    Boolean isAssigned;
+    String measureInterval;
 
+    public String getMeasureInterval() {
+        return measureInterval;
+    }
+
+    public void setMeasureInterval(String measureInterval) {
+        this.measureInterval = measureInterval;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public void setAssigned(Boolean assigned) {
+        isAssigned = assigned;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public Boolean getAssigned() {
+        return isAssigned;
+    }
+
+    public String getStationKey() {
+        return stationKey;
+    }
+
+    public void setStationKey(String stationKey) {
+        this.stationKey = stationKey;
+    }
+    public String getStationName() {
+        return stationName;
+    }
+
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
+    }
 
     public Boolean getVisible() {
         return visible;
@@ -26,24 +67,20 @@ public class Station { //? seperate one collection for existing, produced statio
         return stationId;
     }
 
-    public Boolean getVisibility() {
-        return visible;
+    public String getLat() {
+        return lat;
     }
 
-    public String getGeolocationCoordinateN() {
-        return geolocationCoordinateN;
+    public String getLng() {
+        return lng;
     }
 
-    public String getGeolocationCoordinateE() {
-        return geolocationCoordinateE;
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
-    public void setGeolocationCoordinateN(String geolocationCoordinateN) {
-        this.geolocationCoordinateN = geolocationCoordinateN;
-    }
-
-    public void setGeolocationCoordinateE(String geolocationCoordinateE) {
-        this.geolocationCoordinateE = geolocationCoordinateE;
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public void setId(String id) {
@@ -54,9 +91,9 @@ public class Station { //? seperate one collection for existing, produced statio
         this.stationId = stationId;
     }
 
-    public void setVisibility(Boolean visibility) {
+    /*public void setVisibility(Boolean visibility) {
         this.visible = visibility;
-    }
+    }*/
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
@@ -68,8 +105,8 @@ public class Station { //? seperate one collection for existing, produced statio
                 "id='" + id + '\'' +
                 ", stationId='" + stationId + '\'' +
                 ", visibility='" + visible + '\'' +
-                ", geolocationCoordinateN='" + geolocationCoordinateN + '\'' +
-                ", geolocationCoordinateE='" + geolocationCoordinateE + '\'' +
+                ", geolocationCoordinateN='" + lat + '\'' +
+                ", geolocationCoordinateE='" + lng + '\'' +
                 '}';
     }
 }

@@ -1,44 +1,42 @@
 package com.weather.server.domain.dto.chart;
 
-import java.util.Date;
-
-public class ChartTempDto {
+public class ChartPressureDto {
     private String date;
-    private Float temp;
+    private Float pressure;
 
-    public ChartTempDto() {
+    public ChartPressureDto() {
     }
 
-    private ChartTempDto(Builder builder) {
+    private ChartPressureDto(Builder builder) {
         this.date = builder.date;
-        this.temp = builder.temp;
+        this.pressure = builder.pressure;
     }
 
     public String getDate() {
         return date;
     }
 
-    public Float getTemp() {
-        return temp;
+    public Float getPressure() {
+        return pressure;
     }
 
     public void setDate(String date) {
         this.date = date;
     }
 
-    public void setTemp(Float temp) {
-        this.temp = temp;
+    public void setPressure(Float pressure) {
+        this.pressure = pressure;
     }
 
 
     public static final class Builder {
         private String date;
-        private Float temp;
+        private Float pressure;
 
         public Builder() {
         }
 
-        public static Builder aChartTempDto() {
+        public static Builder aChartPressureDto() {
             return new Builder();
         }
 
@@ -47,13 +45,13 @@ public class ChartTempDto {
             return this;
         }
 
-        public Builder temp(Float temp) {
-            this.temp = temp;
+        public Builder pressure(Float pressure) {
+            this.pressure = pressure;
             return this;
         }
 
-        public ChartTempDto build() {
-            return new ChartTempDto(this);
+        public ChartPressureDto build() {
+            return new ChartPressureDto(this);
         }
     }
 }

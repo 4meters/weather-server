@@ -30,6 +30,6 @@ class ServerApplicationTests {
 	void readMongo(){
 		System.out.println("Test");
 		//System.out.println(measureRepository.findAllOrderByTimestampAsc());
-		System.out.println(measureRepository.findByTemp("-3.09"));
+		System.out.println(measureRepository.findLastMeasureByStationId("00000000e34ec9d1",(float)200));
 	}
 }

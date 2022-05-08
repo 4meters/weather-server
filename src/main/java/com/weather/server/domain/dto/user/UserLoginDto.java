@@ -1,19 +1,19 @@
 package com.weather.server.domain.dto.user;
 
 public class UserLoginDto {
-    private String email;
+    private String login;
     private String password;
 
     public UserLoginDto() {
     }
 
     public UserLoginDto(Builder builder) {
-        this.email = builder.email;
+        this.login = builder.login;
         this.password = builder.password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
     public String getPassword() {
@@ -21,14 +21,14 @@ public class UserLoginDto {
     }
 
     public static final class Builder {
-        private String email;
+        private String login;
         private String password;
 
         public Builder() {
         }
 
-        public Builder email(String email) {
-            this.email = email;
+        public Builder login(String login) {
+            this.login = login;
             return this;
         }
 

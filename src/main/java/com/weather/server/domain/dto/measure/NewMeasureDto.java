@@ -1,7 +1,6 @@
 package com.weather.server.domain.dto.measure;
 
 public class NewMeasureDto {
-    private String apiKey;
     private String stationId;
     private String date;
     private String temp;
@@ -10,13 +9,11 @@ public class NewMeasureDto {
     private String pm25;
     private String pm10;
     private String pm25Corr;
-    //station_id
 
     public NewMeasureDto() {
     }
 
     private NewMeasureDto(Builder builder){
-        apiKey = builder.apiKey;
         stationId = builder.stationId;
         date = builder.date;
         temp = builder.temp;
@@ -30,8 +27,7 @@ public class NewMeasureDto {
     @Override
     public String toString() {
         return "NewMeasureDto{" +
-                "apiKey='" + apiKey + '\'' +
-                ", stationId='" + stationId + '\'' +
+                "stationId='" + stationId + '\'' +
                 ", date='" + date + '\'' +
                 ", temp='" + temp + '\'' +
                 ", humidity='" + humidity + '\'' +
@@ -42,9 +38,6 @@ public class NewMeasureDto {
                 '}';
     }
 
-    public String getApiKey() {
-        return apiKey;
-    }
 
     public String getStationId() {
         return stationId;
@@ -80,7 +73,6 @@ public class NewMeasureDto {
 
 
     public static final class Builder {
-        private String apiKey;
         private String stationId;
         private String date;
         private String temp;
@@ -93,10 +85,6 @@ public class NewMeasureDto {
         public Builder() {
         }
 
-        public Builder apiKey(String apiKey) {
-            this.apiKey = apiKey;
-            return this;
-        }
 
         public Builder stationId(String stationId) {
             this.stationId = stationId;
@@ -145,8 +133,7 @@ public class NewMeasureDto {
         @Override
         public String toString() {
             return "Builder{" +
-                    "apiKey='" + apiKey + '\'' +
-                    ", stationId='" + stationId + '\'' +
+                    "stationId='" + stationId + '\'' +
                     ", date='" + date + '\'' +
                     ", temp='" + temp + '\'' +
                     ", humidity='" + humidity + '\'' +
