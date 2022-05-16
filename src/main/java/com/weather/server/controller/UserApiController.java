@@ -1,5 +1,6 @@
 package com.weather.server.controller;
 
+import com.weather.server.domain.dto.admin.RemoveStationDto;
 import com.weather.server.domain.dto.user.UserBookmarkStation;
 import com.weather.server.domain.dto.user.*;
 import com.weather.server.service.StationService;
@@ -74,6 +75,7 @@ public class UserApiController {
         return userService.removeBookmark(userBookmarkStation) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
     //TODO add bookmark, remove bookmark
 
 

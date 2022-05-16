@@ -12,6 +12,7 @@ public class StationDtoMapper {
                 .stationName(station.getStationName())
                 .lat(station.getLat())
                 .lng(station.getLng())
+                .visible(station.getVisible())
                 .isActive(station.getActive())
                 .measureInterval(station.getMeasureInterval()).build();
     }

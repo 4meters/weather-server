@@ -1,11 +1,13 @@
 package com.weather.server.service;
 
+import com.weather.server.domain.dto.admin.RemoveStationDto;
 import com.weather.server.domain.dto.station.StationChangeNameDto;
 import com.weather.server.domain.dto.station.StationSetVisibilityDto;
 import com.weather.server.domain.dto.station.*;
 import com.weather.server.domain.dto.user.UserMyStationListDetailsDto;
 import com.weather.server.domain.dto.user.UserStationListDto;
 import com.weather.server.domain.entity.Station;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -36,4 +38,6 @@ public interface StationService {
     boolean changeStationName(StationChangeNameDto stationChangeNameDto);
 
     boolean setVisibility(StationSetVisibilityDto stationSetVisibilityDto);
+
+    ResponseEntity<?> removeStation(RemoveStationDto removeStationDto);
 }

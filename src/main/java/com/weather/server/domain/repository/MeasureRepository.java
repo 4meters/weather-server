@@ -15,6 +15,8 @@ import java.util.List;
 public interface MeasureRepository extends MongoRepository<Measure, String>{
 
 
+    void deleteByStationId(String stationId);
+
     @Aggregation(pipeline={
             "{$match: {stationId: {$eq: ?0}}}",
             "{$sort: {date: -1}}",

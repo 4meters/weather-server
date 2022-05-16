@@ -1,5 +1,6 @@
 package com.weather.server.service.impl;
 
+import com.weather.server.domain.dto.admin.RemoveStationDto;
 import com.weather.server.domain.dto.station.StationChangeNameDto;
 import com.weather.server.domain.dto.station.StationSetVisibilityDto;
 import com.weather.server.domain.dto.station.*;
@@ -19,6 +20,8 @@ import com.weather.server.service.MeasureService;
 import com.weather.server.service.StationService;
 import com.weather.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -353,6 +356,27 @@ public class StationServiceImpl implements StationService {
             }
         }
         return false;
+    }
+
+    @Override
+    public ResponseEntity<?> removeStation(RemoveStationDto removeStationDto) {
+        if(userService.checkToken(removeStationDto.getToken())){
+            Station station = stationRepository.findByStationId(removeStationDto.getStationId());
+            if(station!=null){
+                stationRepository.delete(station);
+                if(removeStationDto.getRemoveMeasures()){
+                    //<<<------->>>//measureRepository.deleteByStationId(removeStationDto.getStationId()); //TODO uncomment and test
+                    System.out.println("TODO");
+                }
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
 
