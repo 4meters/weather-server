@@ -1,5 +1,6 @@
 package com.weather.server.controller;
 
+import com.weather.server.domain.dto.admin.RemoveStationDto;
 import com.weather.server.domain.dto.station.StationChangeNameDto;
 import com.weather.server.domain.dto.station.StationSetVisibilityDto;
 import com.weather.server.domain.dto.station.*;
@@ -89,6 +90,11 @@ public class StationApiController {
     public ResponseEntity<?> setVisibility(@RequestBody StationSetVisibilityDto stationSetVisibilityDto){
         return stationService.setVisibility(stationSetVisibilityDto) ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(value = "/remove-station")
+    public ResponseEntity<?> removeStation(@RequestBody RemoveStationDto removeStationDto){
+        return stationService.removeStation(removeStationDto);
     }
 
     /*@PostMapping(value="/add-station")

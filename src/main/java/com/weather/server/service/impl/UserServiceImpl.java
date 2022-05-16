@@ -1,5 +1,6 @@
 package com.weather.server.service.impl;
 
+import com.weather.server.domain.dto.admin.RemoveStationDto;
 import com.weather.server.domain.dto.user.*;
 import com.weather.server.domain.entity.Station;
 import com.weather.server.domain.entity.User;
@@ -13,6 +14,7 @@ import com.weather.server.domain.repository.UserRepository;
 import com.weather.server.domain.repository.UserStationListRepository;
 import com.weather.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -193,5 +195,10 @@ public class UserServiceImpl implements UserService {
         else{
             return false;
         }
+    }
+
+    @Override
+    public ResponseEntity<?> removeStation(RemoveStationDto removeStationDto) {
+        return null;
     }
 }
