@@ -84,6 +84,13 @@ public class UserApiController {
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping(value="/validate-token/{token}")
+    public ResponseEntity<?> removeBookmark(@PathVariable String token){
+
+        return userService.validateToken(token) ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
     //TODO add bookmark, remove bookmark
 
 

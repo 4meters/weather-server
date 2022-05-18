@@ -201,4 +201,9 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> removeStation(RemoveStationDto removeStationDto) {
         return null;
     }
+
+    @Override
+    public boolean validateToken(String token) {
+        return checkToken(token);
+    }
 }
