@@ -4,6 +4,7 @@ import com.weather.server.domain.dto.admin.RemoveStationDto;
 import com.weather.server.domain.dto.station.StationChangeNameDto;
 import com.weather.server.domain.dto.station.StationSetVisibilityDto;
 import com.weather.server.domain.dto.station.*;
+import com.weather.server.domain.dto.user.UserBookmarkStationListDetailsDto;
 import com.weather.server.domain.dto.user.UserMyStationListDetailsDto;
 import com.weather.server.domain.dto.user.UserStationListDto;
 import com.weather.server.domain.entity.Measure;
@@ -377,6 +378,48 @@ public class StationServiceImpl implements StationService {
         else{
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
+    }
+
+    @Override
+    public UserBookmarkStationListDetailsDto getUserBookmarkStationListDetails(String token) {
+        if(userService.checkToken(token)) {
+            List<Station> bookmarkStationListForDto = new ArrayList<>();
+            HashMap<String, Measure> measureList = new HashMap<>();
+
+            User user = userRepository.findByToken(token);
+            UserStationList userStationList = userStationListRepository.findByUserId(user.getUserId());
+
+            if (userStationList != null) {
+                List<String> bookmarkStationList = userStationList.getBookmarkStationList();
+
+
+                if (bookmarkStationList != null && !bookmarkStationList.isEmpty()) {
+                    bookmarkStationListForDto = stationRepository.findAll();
+                    //System.out.println(bookmarkStationListForDto);
+                    for (String stationId : bookmarkStationList) {
+                        System.out.println(stationId);
+                        bookmarkStationListForDto.removeIf(station -> !station.getStationId().equals(stationId));
+                    }
+                }
+
+                assert bookmarkStationList != null;
+                for (String stationId : bookmarkStationList) {
+                    Station station = stationRepository.findByStationId(stationId);
+                    float elevation = measureService.getElevation(station.getLat(),station.getLng());//pressure elev fix
+                    Measure measure = measureRepository.findLastMeasureByStationId(stationId, elevation);
+                    if (measure != null) {
+                        measureList.put(stationId, measure);
+                    }
+                }
+                return new UserBookmarkStationListDetailsDto.Builder()
+                        .stationList(bookmarkStationListForDto)
+                        .measureList(measureList)
+                        .build();
+                //get measures
+
+            }
+        }
+        return null;
     }
 
 
