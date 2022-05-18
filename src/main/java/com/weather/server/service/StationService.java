@@ -4,6 +4,7 @@ import com.weather.server.domain.dto.admin.RemoveStationDto;
 import com.weather.server.domain.dto.station.StationChangeNameDto;
 import com.weather.server.domain.dto.station.StationSetVisibilityDto;
 import com.weather.server.domain.dto.station.*;
+import com.weather.server.domain.dto.user.UserBookmarkStationListDetailsDto;
 import com.weather.server.domain.dto.user.UserMyStationListDetailsDto;
 import com.weather.server.domain.dto.user.UserStationListDto;
 import com.weather.server.domain.entity.Station;
@@ -40,4 +41,6 @@ public interface StationService {
     boolean setVisibility(StationSetVisibilityDto stationSetVisibilityDto);
 
     ResponseEntity<?> removeStation(RemoveStationDto removeStationDto);
+
+    UserBookmarkStationListDetailsDto getUserBookmarkStationListDetails(String token);
 }

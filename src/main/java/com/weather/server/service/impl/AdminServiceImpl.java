@@ -80,6 +80,7 @@ public class AdminServiceImpl implements AdminService {
         if(checkIfAdmin(removeUserDto.getToken())){
             User user = userRepository.findByUserId(removeUserDto.getUserId());
             if(user!=null){
+
                 userRepository.delete(user);
 
                 //TODO my stations -> reset isAssigned to false
