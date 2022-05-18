@@ -21,6 +21,8 @@ public interface UserService {
 
     ResponseEntity<?> removeStation(RemoveStationDto removeStationDto);
 
+    boolean validateToken(String token);
+
     //TODO verify password
     //TODO reset password?
 }
