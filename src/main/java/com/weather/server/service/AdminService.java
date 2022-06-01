@@ -11,8 +11,10 @@ public interface AdminService {
 
     ResponseEntity<?> addStationToDb(AddStationToDbDto addStationToDbDto);
     ResponseEntity<?> removeStation(RemoveStationDto removeStationDto);
+    ResponseEntity<?> removeStationFromDb(RemoveStationDto removeStationDto);
     ResponseEntity<?> removeUser(RemoveUserDto removeUserDto);
     ResponseEntity<?> resetUserPassword(ResetUserPasswordDto resetUserPasswordDto);
     ResponseEntity<?> getAllUsers(String token);
     ResponseEntity<?> getAllStations(String token);
+    boolean checkIfAdmin(String token);
 }

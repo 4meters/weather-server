@@ -27,7 +27,7 @@ public class StationApiController {
         //if api key is valid
         //stationService.getStationList()
         //add token veryfication
-        return new ResponseEntity<>(new StationListDto.Builder().stationList(stationService.getStationList("")).build()
+        return new ResponseEntity<>(new StationListDtoAdmin.Builder().stationList(stationService.getStationList("")).build()
                 , HttpStatus.OK);
 
     }*/

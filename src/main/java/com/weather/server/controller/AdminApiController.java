@@ -35,6 +35,11 @@ public class AdminApiController {
         return adminService.removeStation(removeStationDto);
     }
 
+    @PostMapping(value = "/remove-station-from-db")
+    public ResponseEntity<?> removeStationFromDb(@RequestBody RemoveStationDto removeStationDto){
+        return adminService.removeStationFromDb(removeStationDto);
+    }
+
     @PostMapping(value = "/remove-user")
     public ResponseEntity<?> removeUser(@RequestBody RemoveUserDto removeUserDto){
         return adminService.removeUser(removeUserDto);
@@ -53,5 +58,10 @@ public class AdminApiController {
     @GetMapping(value = "/get-all-stations")
     public ResponseEntity<?> getAllStations(@RequestParam String token){
         return adminService.getAllStations(token);
+    }
+
+    @GetMapping(value = "/verify-admin")
+    public ResponseEntity<?> verifyAdmin(@RequestParam String token){
+        return adminService.checkIfAdmin(token) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 }
