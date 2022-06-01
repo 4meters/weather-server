@@ -197,6 +197,12 @@ public class StationServiceImpl implements StationService {
                         .bookmarkStationList(bookmarkStationListForDto)
                         .build();
             }
+            else{
+                return new UserStationListDto.Builder()
+                        .myStationList(new ArrayList<>())
+                        .bookmarkStationList(new ArrayList<>())
+                        .build();
+            }
 
         }
 

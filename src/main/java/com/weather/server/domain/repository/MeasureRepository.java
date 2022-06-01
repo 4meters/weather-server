@@ -46,7 +46,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', temp: { $round: ['$temp', 1] }}}"
     })
-    List<MeasureAggregation> findMaxTempByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMaxTempByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -54,7 +54,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', humidity: { $round: ['$humidity', 0]}}}"
     })
-    List<MeasureAggregation> findMaxHumidityByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMaxHumidityByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -66,7 +66,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
                     "pressure: {$round: [{$multiply: ['$pressure',{$pow: [{$subtract: [1, {$divide: [{$multiply: [0.0065, ?4]}," +
                     " {$sum: ['$temp', {$multiply: [0.0065, ?4]}, 273.15]}]}]}, -5.257]}]}, 0]}}}"
     })
-    List<MeasureAggregation> findMaxPressureByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone, float elevation);
+    List<MeasureAggregation> findMaxPressureByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone, float elevation);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -74,7 +74,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm10: { $round: ['$pm10', 1]}}}"
     })
-    List<MeasureAggregation> findMaxPM10ByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMaxPM10ByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -82,7 +82,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25: { $round: ['$pm25', 1]}}}"
     })
-    List<MeasureAggregation> findMaxPM25ByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMaxPM25ByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -90,7 +90,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25Corr: { $round: ['$pm25Corr', 1]}}}"
     })
-    List<MeasureAggregation> findMaxPM25CorrByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMaxPM25CorrByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
     //Aggregations: max by hour - end
 
 
@@ -104,7 +104,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', temp: { $round: ['$temp', 1] }}}"
     })
-    List<MeasureAggregation> findMaxTempByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMaxTempByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -112,7 +112,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', humidity: { $round: ['$humidity', 0]}}}"
     })
-    List<MeasureAggregation> findMaxHumidityByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMaxHumidityByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -123,7 +123,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
                     "pressure: {$round: [{$multiply: ['$pressure',{$pow: [{$subtract: [1, {$divide: [{$multiply: [0.0065, ?4]}," +
                     " {$sum: ['$temp', {$multiply: [0.0065, ?4]}, 273.15]}]}]}, -5.257]}]}, 0]}}}"
     })
-    List<MeasureAggregation> findMaxPressureByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone, float elevation);
+    List<MeasureAggregation> findMaxPressureByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone, float elevation);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -131,7 +131,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm10: { $round: ['$pm10', 1]}}}"
     })
-    List<MeasureAggregation> findMaxPM10ByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMaxPM10ByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -139,7 +139,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25: { $round: ['$pm25', 1]}}}"
     })
-    List<MeasureAggregation> findMaxPM25ByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMaxPM25ByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -147,7 +147,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25Corr: { $round: ['$pm25Corr', 1]}}}"
     })
-    List<MeasureAggregation> findMaxPM25CorrByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMaxPM25CorrByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     //Aggregations max by day - end
 
@@ -163,7 +163,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', temp: { $round: ['$temp', 1] }}}"
     })
-    List<MeasureAggregation> findMinTempByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMinTempByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -171,7 +171,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', humidity: { $round: ['$humidity', 0]}}}"
     })
-    List<MeasureAggregation> findMinHumidityByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMinHumidityByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -182,7 +182,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
                     "pressure: {$round: [{$multiply: ['$pressure',{$pow: [{$subtract: [1, {$divide: [{$multiply: [0.0065, ?4]}," +
                     " {$sum: ['$temp', {$multiply: [0.0065, ?4]}, 273.15]}]}]}, -5.257]}]}, 0]}}}"
     })
-    List<MeasureAggregation> findMinPressureByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone, float elevation);
+    List<MeasureAggregation> findMinPressureByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone, float elevation);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -190,7 +190,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm10: { $round: ['$pm10', 1]}}}"
     })
-    List<MeasureAggregation> findMinPM10ByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMinPM10ByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -198,7 +198,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25: { $round: ['$pm25', 1]}}}"
     })
-    List<MeasureAggregation> findMinPM25ByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMinPM25ByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -206,7 +206,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25Corr: { $round: ['$pm25Corr', 1]}}}"
     })
-    List<MeasureAggregation> findMinPM25CorrByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMinPM25CorrByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     //Aggregations min by hour end
 
@@ -217,7 +217,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', temp: { $round: ['$temp', 1] }}}"
     })
-    List<MeasureAggregation> findMinTempByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMinTempByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -225,7 +225,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', humidity: { $round: ['$humidity', 0]}}}"
     })
-    List<MeasureAggregation> findMinHumidityByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMinHumidityByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -236,7 +236,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
                     "pressure: {$round: [{$multiply: ['$pressure',{$pow: [{$subtract: [1, {$divide: [{$multiply: [0.0065, ?4]}," +
                     " {$sum: ['$temp', {$multiply: [0.0065, ?4]}, 273.15]}]}]}, -5.257]}]}, 0]}}}"
     })
-    List<MeasureAggregation> findMinPressureByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone, float elevation);
+    List<MeasureAggregation> findMinPressureByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone, float elevation);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -244,7 +244,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm10: { $round: ['$pm10', 1]}}}"
     })
-    List<MeasureAggregation> findMinPM10ByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMinPM10ByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -252,7 +252,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25: { $round: ['$pm25', 1]}}}"
     })
-    List<MeasureAggregation> findMinPM25ByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMinPM25ByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -260,7 +260,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25Corr: { $round: ['$pm25Corr', 1]}}}"
     })
-    List<MeasureAggregation> findMinPM25CorrByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findMinPM25CorrByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
     //Aggregation min by day end
 
     //Aggregation avg
@@ -273,7 +273,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', temp: { $round: ['$temp', 1] }}}"
     })
-    List<MeasureAggregation> findAvgTempByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findAvgTempByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -281,7 +281,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', humidity: { $round: ['$humidity', 0]}}}"
     })
-    List<MeasureAggregation> findAvgHumidityByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findAvgHumidityByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -292,7 +292,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
                     "pressure: {$round: [{$multiply: ['$pressure',{$pow: [{$subtract: [1, {$divide: [{$multiply: [0.0065, ?4]}," +
                     " {$sum: ['$temp', {$multiply: [0.0065, ?4]}, 273.15]}]}]}, -5.257]}]}, 0]}}}"
     })
-    List<MeasureAggregation> findAvgPressureByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone, float elevation);
+    List<MeasureAggregation> findAvgPressureByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone, float elevation);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -300,7 +300,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm10: { $round: ['$pm10', 1]}}}"
     })
-    List<MeasureAggregation> findAvgPM10ByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findAvgPM10ByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -308,7 +308,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25: { $round: ['$pm25', 1]}}}"
     })
-    List<MeasureAggregation> findAvgPM25ByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findAvgPM25ByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -316,7 +316,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25Corr: { $round: ['$pm25Corr', 1]}}}"
     })
-    List<MeasureAggregation> findAvgPM25CorrByDateBeetweenGroupByHour(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findAvgPM25CorrByDateBetweenGroupByHour(Date from, Date to, String stationId, String timezone);
 
     //Aggregations avg by hour end
 
@@ -327,7 +327,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', temp: { $round: ['$temp', 1] }}}"
     })
-    List<MeasureAggregation> findAvgTempByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findAvgTempByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -335,7 +335,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', humidity: { $round: ['$humidity', 0]}}}"
     })
-    List<MeasureAggregation> findAvgHumidityByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findAvgHumidityByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -346,7 +346,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
                     "pressure: {$round: [{$multiply: ['$pressure',{$pow: [{$subtract: [1, {$divide: [{$multiply: [0.0065, ?4]}," +
                     " {$sum: ['$temp', {$multiply: [0.0065, ?4]}, 273.15]}]}]}, -5.257]}]}, 0]}}}"
     })
-    List<MeasureAggregation> findAvgPressureByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone, float elevation);
+    List<MeasureAggregation> findAvgPressureByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone, float elevation);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -354,7 +354,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm10: { $round: ['$pm10', 1]}}}"
     })
-    List<MeasureAggregation> findAvgPM10ByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findAvgPM10ByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -362,7 +362,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25: { $round: ['$pm25', 1]}}}"
     })
-    List<MeasureAggregation> findAvgPM25ByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findAvgPM25ByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
 
     @Aggregation(pipeline={
             "{$match: {date: { $gte: ?0, $lte: ?1}, stationId: {$eq: ?2}}}",
@@ -370,7 +370,7 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
             "{$sort: {_id: 1}}",
             "{$addFields: {date: '$_id', pm25Corr: { $round: ['$pm25Corr', 1]}}}"
     })
-    List<MeasureAggregation> findAvgPM25CorrByDateBeetweenGroupByDay(Date from, Date to, String stationId, String timezone);
+    List<MeasureAggregation> findAvgPM25CorrByDateBetweenGroupByDay(Date from, Date to, String stationId, String timezone);
     //Aggregation avg by day end
 
     //Aggregation avg -end

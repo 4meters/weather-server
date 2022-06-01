@@ -1,10 +1,7 @@
 package com.weather.server.service;
 
 import com.weather.server.domain.dto.admin.RemoveStationDto;
-import com.weather.server.domain.dto.user.UserBookmarkStation;
-import com.weather.server.domain.dto.user.UserLoginDto;
-import com.weather.server.domain.dto.user.UserLoginTokenDto;
-import com.weather.server.domain.dto.user.UserPasswordChangeDto;
+import com.weather.server.domain.dto.user.*;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
@@ -20,6 +17,8 @@ public interface UserService {
     boolean removeBookmark(UserBookmarkStation userBookmarkStation);
 
     ResponseEntity<?> removeStation(RemoveStationDto removeStationDto);
+
+    boolean removeUser(UserRemoveDto userRemoveDto);
 
     boolean validateToken(String token);
 

@@ -186,28 +186,28 @@ public class MeasureServiceImpl implements MeasureService {
                         case "avg":{
                             switch(measureByDateChartDto.getChartValue()){
                                 case "temp":{
-                                    measureList=measureRepository.findAvgTempByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findAvgTempByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "humidity":{
-                                    measureList=measureRepository.findAvgHumidityByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findAvgHumidityByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pressure":{
                                     Float elevation = getElevation(station.getLat(), station.getLng());
-                                    measureList=measureRepository.findAvgPressureByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone, elevation);
+                                    measureList=measureRepository.findAvgPressureByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
-                                    measureList=measureRepository.findAvgPM10ByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findAvgPM10ByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25":{
-                                    measureList=measureRepository.findAvgPM25ByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findAvgPM25ByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25Corr":{
-                                    measureList=measureRepository.findAvgPM25CorrByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findAvgPM25CorrByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
 
@@ -218,28 +218,28 @@ public class MeasureServiceImpl implements MeasureService {
                         case "min":{
                             switch(measureByDateChartDto.getChartValue()){
                                 case "temp":{
-                                    measureList=measureRepository.findMinTempByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMinTempByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "humidity":{
-                                    measureList=measureRepository.findMinHumidityByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMinHumidityByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pressure":{
                                     Float elevation = getElevation(station.getLat(), station.getLng());
-                                    measureList=measureRepository.findMinPressureByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone, elevation);
+                                    measureList=measureRepository.findMinPressureByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
-                                    measureList=measureRepository.findMinPM10ByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMinPM10ByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25":{
-                                    measureList=measureRepository.findMinPM25ByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMinPM25ByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25Corr":{
-                                    measureList=measureRepository.findMinPM25CorrByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMinPM25CorrByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                             }
@@ -248,28 +248,28 @@ public class MeasureServiceImpl implements MeasureService {
                         case "max": {
                             switch(measureByDateChartDto.getChartValue()){
                                 case "temp":{
-                                    measureList=measureRepository.findMaxTempByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMaxTempByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "humidity":{
-                                    measureList=measureRepository.findMaxHumidityByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMaxHumidityByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pressure":{
                                     Float elevation = getElevation(station.getLat(), station.getLng());
-                                    measureList=measureRepository.findMaxPressureByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone, elevation);
+                                    measureList=measureRepository.findMaxPressureByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
-                                    measureList=measureRepository.findMaxPM10ByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMaxPM10ByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25":{
-                                    measureList=measureRepository.findMaxPM25ByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMaxPM25ByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25Corr":{
-                                    measureList=measureRepository.findMaxPM25CorrByDateBeetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMaxPM25CorrByDateBetweenGroupByHour(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                             }
@@ -290,28 +290,28 @@ public class MeasureServiceImpl implements MeasureService {
                         case "avg":{
                             switch(measureByDateChartDto.getChartValue()){
                                 case "temp":{
-                                    measureList=measureRepository.findAvgTempByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findAvgTempByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "humidity":{
-                                    measureList=measureRepository.findAvgHumidityByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findAvgHumidityByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pressure":{
                                     Float elevation = getElevation(station.getLat(), station.getLng());
-                                    measureList=measureRepository.findAvgPressureByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone, elevation);
+                                    measureList=measureRepository.findAvgPressureByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
-                                    measureList=measureRepository.findAvgPM10ByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findAvgPM10ByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25":{
-                                    measureList=measureRepository.findAvgPM25ByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findAvgPM25ByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25Corr":{
-                                    measureList=measureRepository.findAvgPM25CorrByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findAvgPM25CorrByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
 
@@ -322,28 +322,28 @@ public class MeasureServiceImpl implements MeasureService {
                         case "min":{
                             switch(measureByDateChartDto.getChartValue()){
                                 case "temp":{
-                                    measureList=measureRepository.findMinTempByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMinTempByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "humidity":{
-                                    measureList=measureRepository.findMinHumidityByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMinHumidityByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pressure":{
                                     Float elevation = getElevation(station.getLat(), station.getLng());
-                                    measureList=measureRepository.findMinPressureByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone, elevation);
+                                    measureList=measureRepository.findMinPressureByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
-                                    measureList=measureRepository.findMinPM10ByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMinPM10ByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25":{
-                                    measureList=measureRepository.findMinPM25ByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMinPM25ByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25Corr":{
-                                    measureList=measureRepository.findMinPM25CorrByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMinPM25CorrByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                             }
@@ -352,28 +352,28 @@ public class MeasureServiceImpl implements MeasureService {
                         case "max": {
                             switch(measureByDateChartDto.getChartValue()){
                                 case "temp":{
-                                    measureList=measureRepository.findMaxTempByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMaxTempByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "humidity":{
-                                    measureList=measureRepository.findMaxHumidityByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMaxHumidityByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pressure":{
                                     Float elevation = getElevation(station.getLat(), station.getLng());
-                                    measureList=measureRepository.findMaxPressureByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone, elevation);
+                                    measureList=measureRepository.findMaxPressureByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone, elevation);
                                     break;
                                 }
                                 case "pm10":{
-                                    measureList=measureRepository.findMaxPM10ByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMaxPM10ByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25":{
-                                    measureList=measureRepository.findMaxPM25ByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMaxPM25ByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                                 case "pm25Corr":{
-                                    measureList=measureRepository.findMaxPM25CorrByDateBeetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
+                                    measureList=measureRepository.findMaxPM25CorrByDateBetweenGroupByDay(dateFrom, dateTo, stationId, timezone);
                                     break;
                                 }
                             }

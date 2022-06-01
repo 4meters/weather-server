@@ -3,12 +3,14 @@ package com.weather.server.service.impl;
 import com.weather.server.domain.dto.admin.*;
 import com.weather.server.domain.entity.Station;
 import com.weather.server.domain.entity.User;
-import com.weather.server.domain.mapper.StationListDtoMapper;
+import com.weather.server.domain.entity.UserStationList;
 import com.weather.server.domain.mapper.UserMapper;
+import com.weather.server.domain.mapper.admin.StationListDtoMapperAdmin;
 import com.weather.server.domain.model.PasswordGenerator;
 import com.weather.server.domain.repository.MeasureRepository;
 import com.weather.server.domain.repository.StationRepository;
 import com.weather.server.domain.repository.UserRepository;
+import com.weather.server.domain.repository.UserStationListRepository;
 import com.weather.server.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +23,18 @@ public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final StationRepository stationRepository;
     private final MeasureRepository measureRepository;
+    private final UserStationListRepository userStationListRepository;
     private final UserMapper userMapper;
-    private final StationListDtoMapper stationListDtoMapper;
+    private final StationListDtoMapperAdmin stationListDtoMapperAdmin;
 
-    public AdminServiceImpl(UserRepository userRepository, StationRepository stationRepository, MeasureRepository measureRepository, UserMapper userMapper, StationListDtoMapper stationListDtoMapper) {
+    public AdminServiceImpl(UserRepository userRepository, StationRepository stationRepository, MeasureRepository measureRepository,
+                            UserStationListRepository userStationListRepository, UserMapper userMapper, StationListDtoMapperAdmin stationListDtoMapperAdmin) {
         this.userRepository = userRepository;
         this.stationRepository = stationRepository;
         this.measureRepository = measureRepository;
+        this.userStationListRepository = userStationListRepository;
         this.userMapper = userMapper;
-        this.stationListDtoMapper = stationListDtoMapper;
+        this.stationListDtoMapperAdmin = stationListDtoMapperAdmin;
     }
 
 
@@ -59,10 +64,36 @@ public class AdminServiceImpl implements AdminService {
         if(checkIfAdmin(removeStationDto.getToken())){
             Station station = stationRepository.findByStationId(removeStationDto.getStationId());
             if(station!=null){
-                stationRepository.delete(station);
+                station.setAssigned(false);
+                station.setVisible(null);
+                station.setLat(null);
+                station.setLng(null);
+                station.setMeasureInterval(null);
+                station.setStationName(null);
+
+                stationRepository.save(station);
                 if(removeStationDto.getRemoveMeasures()){
-                    //<<<------->>>//measureRepository.deleteByStationId(removeStationDto.getStationId()); //TODO uncomment and test
-                    System.out.println("TODO");
+                    measureRepository.deleteByStationId(removeStationDto.getStationId());
+                }
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> removeStationFromDb(RemoveStationDto removeStationDto) {
+        if(checkIfAdmin(removeStationDto.getToken())){
+            Station station = stationRepository.findByStationId(removeStationDto.getStationId());
+            if(station!=null){
+                stationRepository.deleteByStationId(station.getStationId());
+                if(removeStationDto.getRemoveMeasures()){
+                    measureRepository.deleteByStationId(removeStationDto.getStationId());
                 }
                 return new ResponseEntity<>(HttpStatus.OK);
             }
@@ -80,10 +111,21 @@ public class AdminServiceImpl implements AdminService {
         if(checkIfAdmin(removeUserDto.getToken())){
             User user = userRepository.findByUserId(removeUserDto.getUserId());
             if(user!=null){
+                UserStationList userStationList = userStationListRepository.findByUserId(user.getUserId());
+                if(userStationList!=null && (userStationList.getMyStationList()!=null && !userStationList.getMyStationList().isEmpty())){
+                    List<String> myStationList = userStationList.getMyStationList();
+                    for(String stationId : myStationList){
+                        Station station = stationRepository.findByStationId(stationId);
+                        if(station!=null){
+                            station.setAssigned(false);
+                            measureRepository.deleteByStationId(stationId);
+                            stationRepository.save(station);
+                        }
+                    }
+                }
 
                 userRepository.delete(user);
 
-                //TODO my stations -> reset isAssigned to false
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             else{
@@ -132,14 +174,14 @@ public class AdminServiceImpl implements AdminService {
     public ResponseEntity<?> getAllStations(String token) {
         if(checkIfAdmin(token)){
             List<Station> stationList = stationRepository.findAll();
-            return new ResponseEntity<>(stationListDtoMapper.mapToDto(stationList), HttpStatus.OK);
+            return new ResponseEntity<>(stationListDtoMapperAdmin.mapToDto(stationList), HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
 
-    private boolean checkIfAdmin(String token){
+    public boolean checkIfAdmin(String token){
         if(token==null){
             return false;
         }

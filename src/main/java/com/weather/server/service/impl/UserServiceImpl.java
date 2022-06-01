@@ -9,6 +9,7 @@ import com.weather.server.domain.mapper.UserMapper;
 import com.weather.server.domain.model.PasswordHasher;
 import com.weather.server.domain.model.TokenGenerator;
 import com.weather.server.domain.model.UserIdGenerator;
+import com.weather.server.domain.repository.MeasureRepository;
 import com.weather.server.domain.repository.StationRepository;
 import com.weather.server.domain.repository.UserRepository;
 import com.weather.server.domain.repository.UserStationListRepository;
@@ -25,13 +26,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final StationRepository stationRepository;
+    private final MeasureRepository measureRepository;
     private final UserStationListRepository userStationListRepository;
     private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, StationRepository stationRepository, UserStationListRepository userStationListRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, StationRepository stationRepository,
+                           UserStationListRepository userStationListRepository, UserMapper userMapper,
+                           MeasureRepository measureRepository) {
         this.userRepository=userRepository;
         this.stationRepository=stationRepository;
+        this.measureRepository=measureRepository;
         this.userStationListRepository = userStationListRepository;
         this.userMapper = userMapper;
     }
@@ -200,6 +205,40 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<?> removeStation(RemoveStationDto removeStationDto) {
         return null;
+    }
+
+    @Override
+    public boolean removeUser(UserRemoveDto userRemoveDto) {
+        User user = userRepository.findByToken(userRemoveDto.getToken());
+        if(user != null){
+            try {
+                String hashedPassword =
+                        PasswordHasher.hashPasswordWithSpecifiedSalt(
+                                userRemoveDto.getPassword(),
+                                PasswordHasher.getSaltFromDBpassword(user.getPassword()));
+                if (user.getPassword().equals(hashedPassword)){
+                    UserStationList userStationList = userStationListRepository.findByUserId(user.getUserId());
+                    if(userStationList!=null && (userStationList.getMyStationList()!=null && !userStationList.getMyStationList().isEmpty())){
+                        List<String> myStationList = userStationList.getMyStationList();
+                        for(String stationId : myStationList){
+                            Station station = stationRepository.findByStationId(stationId);
+                            if(station!=null){
+                                station.setAssigned(false);
+                                measureRepository.deleteByStationId(stationId);
+                                stationRepository.save(station);
+                            }
+                        }
+                    }
+                    userRepository.deleteByUserId(user.getUserId());
+                    return true;
+                }
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override

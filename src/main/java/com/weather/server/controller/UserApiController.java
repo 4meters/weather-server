@@ -47,6 +47,12 @@ public class UserApiController {
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping(value="/remove-user")
+    public ResponseEntity<?> removeUser(@RequestBody UserRemoveDto userRemoveDto){
+        return userService.removeUser(userRemoveDto) ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping(value="/get-user-stationlist/{token}")
     public ResponseEntity<UserStationListDto> getUserStationList(@PathVariable String token){
         UserStationListDto userStationListDto = stationService.getUserStationList(token);
