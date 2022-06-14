@@ -68,17 +68,4 @@ public class MeasureApiController {
 
     }
 
-    //TODO -TEST ONLY! REMOVE BEFORE RELEASE
-    @GetMapping(value="/dump-all-db")
-    public ResponseEntity<?> getByDate(){
-        MeasureListDto measureListDto = measureService.getMeasureDatabase();
-        if(measureListDto!=null){
-            return new ResponseEntity<>(measureListDto, HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-    }
-    //TODO END
 }
