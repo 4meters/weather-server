@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserApiController {
 
-
-
     private UserService userService;
     private StationService stationService;
 
@@ -56,7 +54,6 @@ public class UserApiController {
     @GetMapping(value="/get-user-stationlist/{token}")
     public ResponseEntity<UserStationListDto> getUserStationList(@PathVariable String token){
         UserStationListDto userStationListDto = stationService.getUserStationList(token);
-        System.out.println(userStationListDto);
         return userStationListDto!=null ? new ResponseEntity<>(userStationListDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -64,7 +61,6 @@ public class UserApiController {
     @GetMapping(value="/get-user-mystationlist-details/{token}")
     public ResponseEntity<UserMyStationListDetailsDto> getUserMyStationListDetails(@PathVariable String token){
         UserMyStationListDetailsDto userMyStationListDetailsDto = stationService.getUserMyStationListDetails(token);
-       // System.out.println(userStationListDto);
         return userMyStationListDetailsDto!=null ? new ResponseEntity<>(userMyStationListDetailsDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -72,32 +68,22 @@ public class UserApiController {
     @GetMapping(value="/get-user-bookmarkstationlist-details/{token}")
     public ResponseEntity<UserBookmarkStationListDetailsDto> getUserBookmarkStationListDetails(@PathVariable String token){
         UserBookmarkStationListDetailsDto userBookmarkStationListDetailsDto = stationService.getUserBookmarkStationListDetails(token);
-        // System.out.println(userStationListDto);
         return userBookmarkStationListDetailsDto!=null ? new ResponseEntity<>(userBookmarkStationListDetailsDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(value="/add-bookmark")
     public ResponseEntity<?> addBookmark(@RequestBody UserBookmarkStation userBookmarkStation){
-
         return userService.addBookmark(userBookmarkStation) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
     @PostMapping(value="/remove-bookmark")
     public ResponseEntity<?> removeBookmark(@RequestBody UserBookmarkStation userBookmarkStation){
 
         return userService.removeBookmark(userBookmarkStation) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
-    @GetMapping(value="/validate-token/{token}")
-    public ResponseEntity<?> removeBookmark(@PathVariable String token){
-
-        return userService.validateToken(token) ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    }
-
-    //TODO add bookmark, remove bookmark
 
 
 }

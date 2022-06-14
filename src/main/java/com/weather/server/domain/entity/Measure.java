@@ -6,12 +6,11 @@ import org.springframework.data.annotation.Id;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class Measure {
 
     @Id
-    public String id;
+    public String _id;
 
 
     public String stationId;
@@ -40,8 +39,8 @@ public class Measure {
     }
 
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public void setStationId(String stationId) {
@@ -84,7 +83,7 @@ public class Measure {
         String isoDate = sdfISO.format(date);
 
         return "Measure{" +
-                "id='" + id + '\'' +
+                "id='" + _id + '\'' +
                 ", date='" + date + '\'' +
                 ", temp='" + temp + '\'' +
                 ", pressure='" + pressure + '\'' +

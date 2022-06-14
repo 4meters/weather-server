@@ -18,7 +18,6 @@ public interface MeasureService {
     MeasureListDto getMeasureDatabase();
 
     LastMeasureListDto getLastMeasureAllPublic();
-    LastMeasureListDto getLastMeasureAllPrivate(String token);
 
     float getElevation(String lat, String lng);
 

@@ -10,7 +10,6 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class PasswordHasher {
-    private static final SecureRandom secureRandom = new SecureRandom();
     private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
     private static final Base64.Decoder base64Decoder = Base64.getUrlDecoder();
 

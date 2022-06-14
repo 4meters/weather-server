@@ -2,8 +2,6 @@ package com.weather.server.domain.entity;
 
 import org.springframework.data.annotation.Id;
 
-import java.util.List;
-
 public class User {
     @Id
     String id;

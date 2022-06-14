@@ -2,7 +2,7 @@ package com.weather.server.domain.entity;
 
 import org.springframework.data.annotation.Id;
 
-public class Station { //? seperate one collection for existing, produced stations?
+public class Station {
     @Id
     String id;
 

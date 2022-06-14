@@ -22,23 +22,12 @@ public class StationApiController {
         this.stationService = stationService;
     }
 
-    /*@GetMapping(value="/get-stationlist{token}")
-    public ResponseEntity<?> getStation(){
-        //if api key is valid
-        //stationService.getStationList()
-        //add token veryfication
-        return new ResponseEntity<>(new StationListDtoAdmin.Builder().stationList(stationService.getStationList("")).build()
-                , HttpStatus.OK);
 
-    }*/
-
-    @GetMapping(value="/get-public-stationlist")//TODO seperate DTO for Station - can't use direct db entine because of station key
+    @GetMapping(value="/get-public-stationlist")
     public ResponseEntity<StationListDto> getPublicStationList(){
-        return new ResponseEntity<>(stationService.getPublicStationList()
-                , HttpStatus.OK);
+        return new ResponseEntity<>(stationService.getPublicStationList(), HttpStatus.OK);
 
     }
-
 
     @GetMapping(value="/get-station-name/{stationId}")
     public ResponseEntity<?> getStationName(@PathVariable String stationId){
@@ -97,26 +86,4 @@ public class StationApiController {
         return stationService.removeStation(removeStationDto);
     }
 
-    /*@PostMapping(value="/add-station")
-    public ResponseEntity<?> add-station(AddStationDto addStationDto){
-        return stationService.addStation ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }*/
-/*
-    @GetMapping(value="/last-measure")
-    public ResponseEntity<NewMeasureDto> getLast(){
-        return new ResponseEntity<>(measureService.getLastMeasure(), HttpStatus.OK);
-    }
-
-    @GetMapping(value="/measure-by-date")
-    public ResponseEntity<?> getByDate(@RequestBody MeasureByDateDto measureByDateDto){
-        MeasureListDto measureListDto = measureService.getMeasureListByDate(measureByDateDto);
-        if(measureListDto!=null){
-            return new ResponseEntity<>(measureListDto, HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-    }
-*/
 }

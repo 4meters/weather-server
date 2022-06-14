@@ -160,7 +160,6 @@ public class UserServiceImpl implements UserService {
                     userStationListRepository.save(userStationList);
                     return true;
                 }
-                //check for station id
             }
         }
         else{

@@ -1,6 +1,5 @@
 package com.weather.server.domain.mapper.admin;
 
-import com.weather.server.domain.dto.station.StationDto;
 import com.weather.server.domain.dto.station.admin.StationDtoAdmin;
 import com.weather.server.domain.entity.Station;
 import org.springframework.stereotype.Component;

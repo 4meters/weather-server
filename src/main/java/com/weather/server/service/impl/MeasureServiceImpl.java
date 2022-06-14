@@ -45,26 +45,16 @@ public class MeasureServiceImpl implements MeasureService {
         this.lastMeasureDtoMapper = lastMeasureDtoMapper;
         this.newMeasureMapper = newMeasureMapper;
     }
-    /*public void test(){
-        ConnectionString connectionString = new ConnectionString("mongodb+srv://admin:zaq1%40WSX@cluster0.fyl2u.mongodb.net/Cluster0?retryWrites=true&w=majority");
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString)
-                .build();
-        MongoClient mongoClient = MongoClients.create(settings);
-        MongoDatabase database = mongoClient.getDatabase("Cluster0");
-    }*/
+
 
     @Override
     public boolean saveMeasure(NewMeasureDto newMeasureDto) {
         if(verifyStationId(newMeasureDto.getStationId())) {
-            //System.out.println("Saving measure");
             Measure measure = newMeasureMapper.mapToEntity(newMeasureDto);
-            //System.out.println(measure);
             measureRepository.save(measure);
             return true;
         }
         else{
-            //System.out.println("Not saving measure - check stationId");
             return false;
         }
     }
@@ -81,18 +71,14 @@ public class MeasureServiceImpl implements MeasureService {
 
     @Override
     public LastMeasureDto getLastMeasure(String stationId) {
-        //System.out.println(stationId);
         Station station = stationRepository.findByStationId(stationId);
         float elevation = getElevation(station.getLat(), station.getLng());
         Measure measure =measureRepository.findLastMeasureByStationId(stationId, elevation);
-        //System.out.println(measure);
         return lastMeasureDtoMapper.mapToDto(measure);
     }
 
     @Override
     public MeasureListDto getMeasureListByDate(MeasureByDateDto measureByDateDto) {
-        //Date dateFrom = Date.from( Instant.parse( "2013-07-06T10:39:40Z" ));
-        //Date dateTo = Date.from( Instant.parse( "2013-07-08T10:39:40Z" ));
         Station station = stationRepository.findByStationId(measureByDateDto.getStationId());
         if(!station.getVisible()){ //if private station verify token
             User user = userRepository.findByToken(measureByDateDto.getToken());
@@ -101,17 +87,13 @@ public class MeasureServiceImpl implements MeasureService {
             }
         }
 
-        //String userId=verifyApiKey(measureByDateDto.getToken());
         if(verifyStationId(measureByDateDto.getStationId())) {
             Date dateFrom = Date.from(Instant.parse(measureByDateDto.getDateFrom()));
             Date dateTo = Date.from(Instant.parse(measureByDateDto.getDateTo()));
 
             String stationId = measureByDateDto.getStationId();
-            //TODO FIX or fixed already? Check
             List<Measure> measureList = measureRepository.findByDateBetween(dateFrom, dateTo, stationId);
 
-            //System.out.println(measureList);
-            //return measureList;
             return new MeasureListDto.Builder()
                     .measureList(measureList)
                     .build();
@@ -141,19 +123,18 @@ public class MeasureServiceImpl implements MeasureService {
                 JsonNode item=itr.next();
                 String elevationStr = item.toString();
                 elevation=Float.parseFloat(elevationStr);
-                //System.out.println(elevation);
                 return elevation;
             }
         }
         catch (Exception e){
-            System.out.println("Error parsing JSON");//incase remote server fails use average elevation
+            System.out.println("Error parsing JSON");
         }
 
         return elevation;
     }
 
     @Override
-    public ChartListDto getMeasuresForChart(MeasureByDateChartDto measureByDateChartDto) {//add switch for multiple type of charts
+    public ChartListDto getMeasuresForChart(MeasureByDateChartDto measureByDateChartDto) {
 
         Station station = stationRepository.findByStationId(measureByDateChartDto.getStationId());
         if(!station.getVisible()){ //if private station verify token
@@ -399,7 +380,6 @@ public class MeasureServiceImpl implements MeasureService {
 
         ArrayList<String> stationIdList = new ArrayList<>();
 
-        //TODO check if works
         //verify stationId for package measures with caching stationIds in list - reduce db queries
         for(NewMeasureDto newMeasureDto : newMeasureDtoList){
             if(!stationIdList.contains(newMeasureDto.getStationId())){
@@ -453,43 +433,5 @@ public class MeasureServiceImpl implements MeasureService {
         }
         return measureList;
     }
-
-    @Override
-    public LastMeasureListDto getLastMeasureAllPrivate(String token) {
-        User user = userRepository.findByToken(token);
-        if(user==null){
-            return null;
-        }
-        else{
-            UserStationList userStationList = userStationListRepository.findByUserId(user.getUserId());
-            List<Station> stationList = stationRepository.findAllByVisible(false);
-            List<String> myStationList = userStationList.getMyStationList();
-            if(myStationList==null){
-                return null;
-            }
-            else if(myStationList.isEmpty()){
-                return null;
-            }
-
-
-            for(String stationId : myStationList){
-                stationList.removeIf(station -> !station.getStationId().equals(stationId));
-            }
-            HashMap<String, Measure> measureList = createMeasureList(stationList);
-
-            return new LastMeasureListDto.Builder().measureList(measureList).build();
-        }
-
-    }
-
-    /*@Override
-    public LastMeasureListDto getLastMeasurePublicAndPrivate(String token) {
-        LastMeasureListDto lastMeasureListPublicDto = getLastMeasureAllPublic();
-        LastMeasureListDto lastMeasureListPrivateDto = getLastMeasureAllPrivate(token);
-
-        ArrayList<Measure> lastMeasureList
-
-    }*/
-
 
 }

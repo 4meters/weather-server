@@ -9,8 +9,6 @@ public interface UserService {
     UserLoginTokenDto loginUser(UserLoginDto userLoginDto);
     boolean checkToken(String token);
 
-    //boolean assignStationId(UserAssignStationDto userAssignStationDto);
-
     boolean changePassword(UserPasswordChangeDto userPasswordChangeDto);
 
     boolean addBookmark(UserBookmarkStation userBookmarkStation);
@@ -22,6 +20,4 @@ public interface UserService {
 
     boolean validateToken(String token);
 
-    //TODO verify password
-    //TODO reset password?
 }
