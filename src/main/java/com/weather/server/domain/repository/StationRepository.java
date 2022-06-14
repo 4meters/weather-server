@@ -15,9 +15,10 @@ public interface StationRepository extends MongoRepository<Station, String> {
 
     Station findByStationId(String stationId);
 
+    List<Station> findByStationIdIn(List<String> stationId);
+
     void deleteByStationId(String stationId);
 
-    //@Query(value = "{'date':{ $gte: ?0, $lte: ?1}, 'userId': {$eq: ?2}}")
     List<Station> findAllByVisible(Boolean visible);
 
 }

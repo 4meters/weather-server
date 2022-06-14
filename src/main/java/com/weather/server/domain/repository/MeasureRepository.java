@@ -32,7 +32,6 @@ public interface MeasureRepository extends MongoRepository<Measure, String>{
     })
     Measure findLastMeasureByStationId(String stationId, float elevation);
 
-    //TODO test if works after changing stationId from null to proper one
     @Query(value = "{'date':{ $gte: ?0, $lte: ?1}, 'stationId': {$eq: ?2}}", sort="{date: 1}")
     List<Measure> findByDateBetween(Date from, Date to, String stationId);
 

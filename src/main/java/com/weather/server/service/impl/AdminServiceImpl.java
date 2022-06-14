@@ -1,6 +1,7 @@
 package com.weather.server.service.impl;
 
 import com.weather.server.domain.dto.admin.*;
+import com.weather.server.domain.dto.user.UserListDto;
 import com.weather.server.domain.entity.Station;
 import com.weather.server.domain.entity.User;
 import com.weather.server.domain.entity.UserStationList;
@@ -146,7 +147,6 @@ public class AdminServiceImpl implements AdminService {
                 user.setPassword(newPassword);
                 userRepository.save(user);
 
-                //TODO my stations -> reset isAssigned to false
                 UserNewPassword userNewPassword = new UserNewPassword.Builder().newPassword(newPassword).build();
                 return new ResponseEntity<>(userNewPassword, HttpStatus.OK);
             }

@@ -1,7 +1,6 @@
 package com.weather.server.domain.mapper;
 
 import com.weather.server.domain.dto.measure.LastMeasureDto;
-import com.weather.server.domain.dto.measure.NewMeasureDto;
 import com.weather.server.domain.entity.Measure;
 import com.weather.server.domain.model.ISODate;
 import org.springframework.stereotype.Component;

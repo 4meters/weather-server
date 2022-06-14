@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,12 +57,7 @@ public class StationServiceImpl implements StationService {
     @Override
     public StationListDto getStationList(String token) {//TODO sth alternative version with all stations public and private in one
         List<Station> stationList;
-        //if(token==null || token.equals("")){
-         //   stationList =  stationRepository.findAllByVisibility(true); //visible
-        //}
-        //else{
-            stationList = stationRepository.findAll();
-        //}
+        stationList = stationRepository.findAll();
         return stationListDtoMapper.mapToDto(stationList);
     }
 
@@ -117,14 +113,13 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public boolean addStationOnMap(AddStationDto addStationDto) { //TODO on remove / remove from user list and map set active to false, assigned to false
+    public boolean addStationOnMap(AddStationDto addStationDto) {
         Station station = stationRepository.findByStationId(addStationDto.getStationId());
         User user = userRepository.findByToken(addStationDto.getToken());
-        //TODO add check if station is already added on map and assigned to user (lat lng not null and stationId present in user stationIdlist)
         if(user!=null && station!=null){
             List<String> myStationList = new ArrayList<>();
             UserStationList userStationList = userStationListRepository.findByUserId(user.getUserId());
-            if(station.getAssigned()==true){
+            if(station.getAssigned()!=null && station.getAssigned()==true){
                 return false;
             }
             if(userStationList==null){
@@ -134,8 +129,7 @@ public class StationServiceImpl implements StationService {
             else{
                 myStationList= userStationList.getMyStationList();
             }
-            //TODO ->>
-            //userStationIdList.contains --> stationRepository.findByStationId -->then--> check assigned status and lat lng if false and null null
+
             myStationList.add(addStationDto.getStationId());
             userStationList.setMyStationList(myStationList);
 
@@ -146,7 +140,6 @@ public class StationServiceImpl implements StationService {
             station.setAssigned(true);
             stationRepository.save(station);
             userStationListRepository.save(userStationList);
-            //userRepository.save(user);
             return true;
         }
         else{
@@ -292,12 +285,7 @@ public class StationServiceImpl implements StationService {
 
 
                 if (myStationList != null && !myStationList.isEmpty()) {
-                    myStationListForDto = stationRepository.findAll();
-                    //System.out.println(myStationListForDto);
-                    for (String stationId : myStationList) {
-                        System.out.println(stationId);
-                        myStationListForDto.removeIf(station -> !station.getStationId().equals(stationId));
-                    }
+                    myStationListForDto = stationRepository.findByStationIdIn(myStationList);
                 }
 
                 assert myStationList != null;
@@ -370,10 +358,17 @@ public class StationServiceImpl implements StationService {
         if(userService.checkToken(removeStationDto.getToken())){
             Station station = stationRepository.findByStationId(removeStationDto.getStationId());
             if(station!=null){
-                stationRepository.delete(station);
+                station.setAssigned(false);
+                station.setVisible(null);
+                station.setLat(null);
+                station.setLng(null);
+                station.setMeasureInterval(null);
+                station.setStationName(null);
+
+                stationRepository.save(station);
+
                 if(removeStationDto.getRemoveMeasures()){
-                    //<<<------->>>//measureRepository.deleteByStationId(removeStationDto.getStationId()); //TODO uncomment and test
-                    System.out.println("TODO");
+                    measureRepository.deleteByStationId(removeStationDto.getStationId());
                 }
                 return new ResponseEntity<>(HttpStatus.OK);
             }
@@ -400,12 +395,7 @@ public class StationServiceImpl implements StationService {
 
 
                 if (bookmarkStationList != null && !bookmarkStationList.isEmpty()) {
-                    bookmarkStationListForDto = stationRepository.findAll();
-                    //System.out.println(bookmarkStationListForDto);
-                    for (String stationId : bookmarkStationList) {
-                        System.out.println(stationId);
-                        bookmarkStationListForDto.removeIf(station -> !station.getStationId().equals(stationId));
-                    }
+                    bookmarkStationListForDto = stationRepository.findByStationIdIn(bookmarkStationList);
                 }
 
                 assert bookmarkStationList != null;
@@ -421,26 +411,10 @@ public class StationServiceImpl implements StationService {
                         .stationList(bookmarkStationListForDto)
                         .measureList(measureList)
                         .build();
-                //get measures
 
             }
         }
         return null;
     }
-
-
-    /*public boolean verifyStationId(String stationId) {
-        Station station = stationRepository.findByStationId(stationId);
-        if(station!=null){
-            if(station.getStationId().equals(stationId)){
-                return true;
-            }
-            else return false;
-        }
-        return false;
-
-
-    }*/
-
 
 }
