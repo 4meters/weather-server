@@ -46,7 +46,7 @@ public class StationApiController {
     @PostMapping(value = "/add-station-on-map")
     public ResponseEntity<?> addStationOnMap(@RequestBody AddStationDto addStationDto){
         return stationService.addStationOnMap(addStationDto) ?
-                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(value = "/mode-switch")
