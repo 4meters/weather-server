@@ -34,5 +34,7 @@ https://app.swaggerhub.com/apis/chuck321/weather-station-server/1.0.0
 
 ## How to run:
 Import project in your IDE, for example IntellijIdea.
+
 Than add Maven running configuration and in command line box enter: spring-boot:run.
+
 Select newly added configuration and run project.
