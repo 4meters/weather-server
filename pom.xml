@@ -48,6 +48,18 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${project.parent.version}</version>
+				<configuration>
+					<image>
+						<name>4meters/${project.artifactId}</name>
+						<publish>false</publish>
+					</image>
+					<docker>
+						<publishRegistry>
+							<username>secret</username>
+							<password>secret</password>
+						</publishRegistry>
+					</docker>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
