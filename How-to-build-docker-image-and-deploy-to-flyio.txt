@@ -1,0 +1,4 @@
+https://dockerize.io/guides/docker-spring-boot-guide
+
+docker build -t weather-server . # run it here
+fly deploy --local-only --image weather-server  
