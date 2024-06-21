@@ -110,25 +110,28 @@ public class MeasureServiceImpl implements MeasureService {
     public float getElevation(String lat, String lng){
         //get elevation from remote
         float elevation = (float)200.0; //default set in case remote server fails
-        final String uri = "https://api.airmap.com/elevation/v1/ele/?points="+lat+","+lng;
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
-        ObjectMapper mapper = new ObjectMapper();
+        /*final String uri = "https://api.opentopodata.org/v1/etopo1?locations="+lat+","+lng;
         try{
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+            ObjectMapper mapper = new ObjectMapper();
+
             JsonNode root = mapper.readTree(Objects.requireNonNull(response.getBody()));
-            JsonNode results = root.path("data");
+            JsonNode results = root.path("results");
 
             if (results.isArray()) {
                 Iterator<JsonNode> itr = results.iterator();
                 JsonNode item=itr.next();
-                String elevationStr = item.toString();
+                String elevationStr = item.path("elevation").toString();
                 elevation=Float.parseFloat(elevationStr);
                 return elevation;
             }
         }
         catch (Exception e){
             System.out.println("Error parsing JSON");
-        }
+            System.out.println(e.getMessage());
+        }*/ //not using since it's has rate limit and airmap no longer works
+        //need to find a way to run it local
 
         return elevation;
     }
